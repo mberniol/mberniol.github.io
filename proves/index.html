@@ -7,7 +7,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
   <style>
-    /* 1. Submenús en mode fosc */
+    /* --- 1. Navbar --- */
+    .navbar {
+      background-color: #ffffff !important;
+      transition: background-color 0.3s ease;
+    }
+    body[data-bs-theme="dark"] .navbar {
+      background-color: #2c2c2c !important;
+    }
     body[data-bs-theme="dark"] .dropdown-menu {
       background-color: #2c2c2c !important;
       border-color: #444;
@@ -21,7 +28,7 @@
       color: #ffffff !important;
     }
 
-    /* 2. Botó mode fosc/clar només icona */
+    /* --- 2. Botó mode fosc/clar --- */
     #themeToggle {
       border: none;
       background: transparent;
@@ -29,7 +36,7 @@
       color: inherit;
     }
 
-    /* 3. Hamburguesa blanca en mode fosc */
+    /* --- 3. Hamburguesa --- */
     .navbar-toggler {
       border: none;
     }
@@ -40,65 +47,89 @@
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,0.9%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
 
-    /* 4. Logo circular i adaptatiu */
+    /* --- 4. Logo --- */
     .logo {
       width: 40px;
       height: 40px;
       object-fit: cover;
     }
     @media (max-width: 576px) {
-      .logo {
-        width: 30px;
-        height: 30px;
-      }
+      .logo { width: 30px; height: 30px; }
     }
     @media (min-width: 992px) {
-      .logo {
-        width: 50px;
-        height: 50px;
-      }
+      .logo { width: 50px; height: 50px; }
     }
 
-    /* --- NOVA REGLA: Quan la barra es col·lapsa (mòbil), assegurar fons blanc no transparent --- */
-    /* Aplica a pantalles petites/mitjanes on el menú es desplega verticalment */
-    @media (max-width: 991.98px) {
-      .navbar-collapse {
-        background-color: #ffffff; /* fons blanc quan el menú està baixat */
-      }
-      /* assegurar que els elements dins es llegeixen bé */
-      .navbar-collapse .nav-link,
-      .navbar-collapse .dropdown-item {
-        color: #212529;
-      }
-      body[data-bs-theme="dark"] .navbar-collapse {
-        background-color: #1c1c1c; /* fons fosc en mode dark */
-      }
-      body[data-bs-theme="dark"] .navbar-collapse .nav-link,
-      body[data-bs-theme="dark"] .navbar-collapse .dropdown-item {
-        color: #f1f1f1;
-      }
+    /* --- 5. Cos amb format APA7 --- */
+    body {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+      line-height: 2;
+      margin: 2.54cm;
+      background-color: #fdfdfd;
+      color: #111;
     }
 
-    /* Quan està mostrant-se (classe show), reforçar el fons per evitar transparència */
-    .navbar-collapse.show {
-      background-color: #ffffff;
+    h1 {
+      font-size: 20pt;
+      text-align: center;
+      text-decoration: underline;
+      font-weight: bold;
+      margin-bottom: 1cm;
     }
-    body[data-bs-theme="dark"] .navbar-collapse.show {
-      background-color: #1c1c1c;
+
+    p {
+      text-align: justify;
+      margin-bottom: 0.5cm;
+    }
+
+    ul {
+      margin-left: 2cm;
+      list-style-type: disc;
+    }
+
+    li {
+      margin-bottom: 0.3cm;
+    }
+
+    a {
+      color: #003366;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      display: block;
+      margin: 0.5cm auto;
+      max-width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    hr {
+      border: none;
+      border-top: 2px solid #000;
+      margin: 1cm 0;
     }
   </style>
 </head>
+
 <body data-bs-theme="light">
+
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top">
     <div class="container-fluid">
-      <!-- 5. Logo i text -->
+      <!-- Logo -->
       <a class="navbar-brand d-flex align-items-center" href="https://mberniol.github.io/">
         <img src="https://mberniol.github.io/logo.png" alt="Logo" class="logo rounded-circle me-2">
         <span class="fw-bold">Web de Marc</span>
       </a>
 
-      <!-- Botó menú mòbil -->
+      <!-- Botó mòbil -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -116,6 +147,7 @@
               <li><a class="dropdown-item" href="#"><i class="fa-solid fa-database me-1"></i> Projecte 1.2</a></li>
             </ul>
           </li>
+
           <!-- Projecte 2 -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="proj2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -128,81 +160,68 @@
             </ul>
           </li>
         </ul>
-        <!-- Botó mode clar/fosc -->
         <button id="themeToggle" class="ms-2"><i class="fa-solid fa-moon"></i></button>
       </div>
     </div>
   </nav>
 
-  
- <h1><u>Comparem carabassó ecològic i convencional: quin té més nutrients segons la ciència i segons la IA?</u></h1>
- <p>He trobat diferents articles científics que estudien el carabassó i els trobareu a continuació en format APA7. APA7 que és una forma d'escriure un article científic. </p>
+  <!-- Cos APA7 -->
+  <h1><u>Comparem carabassó ecològic i convencional: quin té més nutrients segons la ciència i segons la IA?</u></h1>
+  <p>He trobat diferents articles científics que estudien el carabassó i els trobareu a continuació en format APA7. APA7 que és una forma d'escriure un article científic.</p>
 
- <p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8536166/?utm_source=chatgpt.com"><b><u>ARTICLE 1 (amb accés):</u></b></a></p>
- <ul><!--unordered list, llista desordenada-->
-<li>Kopczyńska Klaudia, Kazimierczak Renata, (2021), Bioactive Compounds, Sugars, and Sensory Attributes of Organic and Conventionally Produced Courgette (Cucurbita pepo), PMC</li>
-</ul> <!--list item, element d'una llista-->
-<p>Li vaig demanar a ChatGPT-5 un article sobre els àcids fenòlics del carabassó orgànic i convencional. Mirant l'article vaig veure la següent taula:</p>
-<img src="Article1_Captura1.png">
-<p>Com podem veure a la taula en els àcids fenòlics entre el carabassó convencional i l'orgànic no hi ha diferències significatives. En canvi, quan li vaig preguntar a ChatGPT-5 sobre quin tenia més àcids fenòlics si el convencional o l'orgànic em va dir el següent:</p>
-<img src="Article1_Captura2.png">
- <p>Segons ChatGPT-5 l'article deia que el carabassó orgànic tenia més àcids fenòlics, quan era completament al revés el convencional era el que tenia més àcids fenòlics. Amb això li vaig preguntar el següent:</p>
-<img src="Article1_Captura3.png">
-<p>Amb aquesta pregunta em va donar la raó i va reconèixer que s'havia equivocat, però vaig voler arribar més en dins i li vaig preguntar sobre els números:</p>
-<img src="Article1_Captura4.png">
- <p>Em va reconèixer que tot el que m'havia dit s'ho havia inventat. Amb això veiem com ChatGPT-5 s'inventa les coses i es basa en el que generalment creu la gent.</p>
+  <!-- ARTICLE 1 -->
+  <p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8536166/?utm_source=chatgpt.com"><u>ARTICLE 1 (amb accés):</u></a></p>
+  <ul>
+    <li>Kopczyńska, K., & Kazimierczak, R. (2021). <i>Bioactive Compounds, Sugars, and Sensory Attributes of Organic and Conventionally Produced Courgette (Cucurbita pepo)</i>. PMC.</li>
+  </ul>
 
- 
- <p>___________________________________________________________________________________________________________________________________________________________________________</p>
- 
- <p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7278829/?utm_source=chatgpt.com"><b><u>ARTICLE 2 (amb accés):</u></b></a></p>
- <ul><!--unordered list, llista desordenada-->
-<li>Kopczyńska Klaudia, Kazimierczak Renata, (2020), The Profile of Selected Antioxidants in Two Courgette Varieties from Organic and Conventional Production, PMC</li>
-</ul> <!--list item, element d'una llista-->
- <p>ChatGPT-5 va compartir amb mi un article sobre quin tenia més vitamina C el carabassó convencional o orgànic. Vaig buscar a l'article i em va sortir la taula que hi ha a continuació:</p>
- <img src="Article2_Captura1.png">
- <p>En aquesta taula observem com el carabassó convencional i l'orgànic no són significatius (ns) en vitamina C. En canvi, quan li vaig preguntar a ChatGPT-5 segons l'article quin era millor em va dir el següent:</p>
- <img src="Article2_Captura2.png">
- <p>Deia que l'estudi no havia trobat la diferència significativa en el contingut de la vitamina C, per tant, en aquest cas ChatGPT-5 va dir la veritat, ja que com a la taula deia no era significatiu i era el mateix que m'havia dit ChatGPT-5.</p>
+  <p>Li vaig demanar a ChatGPT-5 un article sobre els àcids fenòlics del carabassó orgànic i convencional. Mirant l'article vaig veure la següent taula:</p>
+  <img src="Article1_Captura1.png" alt="Taula article 1">
 
-<p>___________________________________________________________________________________________________________________________________________________________________________</p>
+  <p>Com podem veure a la taula en els àcids fenòlics entre el carabassó convencional i l'orgànic no hi ha diferències significatives. En canvi, quan li vaig preguntar a ChatGPT-5 sobre quin tenia més àcids fenòlics si el convencional o l'orgànic em va dir el següent:</p>
+  <img src="Article1_Captura2.png" alt="Resposta ChatGPT-5 article 1">
 
- <p><a href="https://www.mdpi.com/2076-3921/9/5/404"><b><u>ARTICLE 3 (amb accés):</u></b></a></p>
- <ul><!--unordered list, llista desordenada-->
-<li>Kopczyńska Klaudia, Kazimierczak Renata, (2020), The Profile of Selected Antioxidants in Two Courgette Varieties from Organic and Conventional Production, MDPI</li>
-</ul> <!--list item, element d'una llista-->
-<p>Ara ho volia fer diferent i volia comprovar que passava si era jo qui li enviava l'article a ChatGPT-5. En aquest article aquesta era la taula de la qual ens basarem i veurem quin carabassó té més vitamina C si el convencional o l'orgànic:</p>
- <img src="Article3_Captura1.png">
- <p>Com podem veure a la taula la comparació entre la vitamina C del carabassó orgànic i el convencional no és significant. Amb això li vaig preguntar al ChatGPT-5 quin tenia més vitamina C segons l'article:</p>
-<img src="Article3_Captura2.png">
- <p>ChatGPT-5 s'ho havia inventat, ja que a la taula posava que no era significant i ChatGPT-5 deia que el carabassó orgànic té més vitamina C. Li vaig preguntar si s'ho havia inventat perquè a la taula posava una altra cosa i em va dir:</p>
- <img src="Article3_Captura3.png">
-<p>Amb aquesta pregunta ja va reconèixer que s'ho havia inventat i vaig desmentir a ChatGPT-5 una altra vegada.</p>
+  <p>Segons ChatGPT-5 l'article deia que el carabassó orgànic tenia més àcids fenòlics, quan era completament al revés el convencional era el que tenia més àcids fenòlics...</p>
+  <img src="Article1_Captura3.png" alt="Pregunta a ChatGPT-5 article 1">
+  <p>Amb aquesta pregunta em va donar la raó i va reconèixer que s'havia equivocat...</p>
+  <img src="Article1_Captura4.png" alt="Admissió d'error ChatGPT-5 article 1">
+  <p>Em va reconèixer que tot el que m'havia dit s'ho havia inventat...</p>
 
- <p>___________________________________________________________________________________________________________________________________________________________________________</p>
+  <hr>
 
- <p><a href="https://premisrecerca.uvic.cat/sites/default/files/webform/f003cf29ed69dce898dff8d63ac173927b24c1f4_TREBALL%20DE%20RECERCA%20DEFINITIU.pdf"><b><u>ARTICLE 4 (amb accés):</u></b></a></p>
- <ul><!--unordered list, llista desordenada-->
-<li>Kopczyńska Klaudia, Kazimierczak Renata, (2020), The Profile of Selected Antioxidants in Two Courgette Varieties from Organic and Conventional Production, MDPI</li>
-</ul> <!--list item, element d'una llista-->
-<p>Aquesta vegada ho vaig fer amb Google Gemini-2.5, ja que volia provar amb uns altres models de llenguatge. Amb el compte de l'institut no em deixava accedir a Google Gemini-2.5, però amb un compte personal em va deixar. Un cop estava a Google Gemini-2.5 li vaig demanar un article sobre les comparacions del carabassó convencional i l'orgànic i me'n va donar un, en aquesta comparació ens fixarem en l'Àcid Ascòrbic, aquesta és la comparació:</p>
-<img src="Article4_Captura1.png">
-<p>Com podem veure a les taules en l'Àcid Ascòrbic en el carabassó convencional (Tradicional) és superior que en el carabassó orgànic (Ecològic). Amb aquestes dades li vaig preguntar a Google Gemini-2.5 que segons l'article quin carabassó era superior en Àcid Ascòrbic si el carabassó convencional (Tradicional) o l'orgànic (Ecològic):</p>
-<img src="Article4_Captura2.png">
-<p>Com veiem Google Gemini-2.5 ens diu que l'article no menciona les diferències en Àcid Ascòrbic del carabassó convencional i l'orgànic, quan com ja ho hem vist a la taula sí que ho menciona. Potser Google Gemini-2.5 s'havia equivocat perquè en l'article no posava orgànic i convencional, posava ecològic i tradicional llavors li ho vaig preguntar amb el que posava a l'article:</p>
- <img src="Article4_Captura3.png">
-<p>El que va dir Google Gemini-2.5 que el carabassó convencional (Tradicional) té més Àcid Ascòrbic que l'orgànic (Ecològic). Però també em va dir les dades i en aquestes sí que s'equivocava, ja que deia que de mitjana el carabassó convencional (Tradicional) era de 21,12 mg/100 g i el carabassó orgànic (Ecològic) era de 20,38 mg/100 g quan les dades en realitat eren aproximadament el carabassó convencional (Tradicional) era de 3,24 mg/100 g i el carabassó orgànic (Ecològic) era de 2,72 mg/100 g. Amb aquesta conclusió li vaig preguntar si s'ho havia inventat i em va dir el següent:</p>
-<img src="Article4_Captura4.png">
-  <p>Google Gemini-2.5 em va dir que no s'havia inventat les dades, però que potser les havia tret d'un altre lloc del document. Vaig revisar l'article i no les havia estret d'allà. Per tant, sí que s'ho havia inventat i li vaig dir que havia revisat l'article i que en cap moment citaven les seves dades i em va dir això:</p>
-<img src="Article4_Captura5.png">
-<p>Amb aquesta resposta finalment em va dir que tenia raó que potser l'article d'on havia tret les dades no era l'article que estàvem citant i que potser era un altre o segons Google Gemini-2.5 havia tret les dades del document original i no d'aquest, quan aquest era l'original. Amb això veiem com Google Gemini-2.5 també s'equivoca i no només ChatGPT-5.</p>
-  
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- ARTICLE 2 -->
+  <p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7278829/?utm_source=chatgpt.com"><u>ARTICLE 2 (amb accés):</u></a></p>
+  <ul>
+    <li>Kopczyńska, K., & Kazimierczak, R. (2020). <i>The Profile of Selected Antioxidants in Two Courgette Varieties from Organic and Conventional Production</i>. PMC.</li>
+  </ul>
+
+  <p>ChatGPT-5 va compartir amb mi un article sobre quin tenia més vitamina C...</p>
+  <img src="Article2_Captura1.png" alt="Taula article 2">
+  <p>En aquesta taula observem com el carabassó convencional i l'orgànic no són significatius...</p>
+  <img src="Article2_Captura2.png" alt="Resposta ChatGPT-5 article 2">
+  <p>Deia que l'estudi no havia trobat la diferència significativa...</p>
+
+  <hr>
+
+  <!-- ARTICLE 3 -->
+  <p><a href="https://www.mdpi.com/2076-3921/9/5/404"><u>ARTICLE 3 (amb accés):</u></a></p>
+  <ul>
+    <li>Kopczyńska, K., & Kazimierczak, R. (2020). <i>The Profile of Selected Antioxidants in Two Courgette Varieties from Organic and Conventional Production</i>. MDPI.</li>
+  </ul>
+
+  <p>Ara ho volia fer diferent i volia comprovar que passava si era jo qui li enviava l'article a ChatGPT-5...</p>
+  <img src="Article3_Captura1.png" alt="Taula article 3">
+  <p>Com podem veure a la taula la comparació entre la vitamina C del carabassó orgànic i el convencional no és significant...</p>
+  <img src="Article3_Captura2.png" alt="Resposta ChatGPT-5 article 3">
+  <p>ChatGPT-5 s'ho havia inventat...</p>
+  <img src="Article3_Captura3.png" alt="Admissió d'error ChatGPT-5 article 3">
+  <p>Amb aquesta pregunta ja va reconèixer que s'ho havia inventat...</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Mode clar/fosc amb canvi d'icona
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = themeToggle.querySelector('i');
-
     themeToggle.addEventListener('click', () => {
       if (document.body.getAttribute('data-bs-theme') === 'dark') {
         document.body.setAttribute('data-bs-theme', 'light');
@@ -215,5 +234,6 @@
       }
     });
   </script>
-</body> 
+
+</body>
 </html>
