@@ -73,38 +73,46 @@
   </style>
 </head>
 <body data-bs-theme="light">
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top">
     <div class="container-fluid">
+      <!-- 5. Logo i text -->
       <a class="navbar-brand d-flex align-items-center" href="https://mberniol.github.io/">
-        <img src="https://mberniol.github.io/logo.png" alt="Logo" class="logo rounded-circle me-2">
+        <img src="logo.png" alt="Logo" class="logo rounded-circle me-2">
         <span class="fw-bold">Web de Marc</span>
       </a>
 
+      <!-- Botó menú mòbil -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Menú -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- Projecte 1 -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="proj1Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-diagram-project me-1"></i> Cerca IA vs Google Acadèmic
+              <i class="fa-solid fa-magnifying-glass"></i> Projectes de recerca
             </a>
             <ul class="dropdown-menu" aria-labelledby="proj1Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/cerca"><i class="fa-solid fa-code me-1"></i> Projecte 1.1. Recerca Carbasó</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/cerca"><i class="fa-solid fa-carrot"></i> Recerca Carbasó</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/contaminacio"><i class="fa-solid fa-smog"></i> Recerca contaminació i salut respiratòria a Gavà</a></li>
             </ul>
           </li>
+          <!-- Projecte 2 -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="proj2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-folder-open me-1"></i> 22 dies en 22 peus
+              <i class="fa-solid fa-ship"></i> Projecte 22 dies en 22 peus
             </a>
             <ul class="dropdown-menu" aria-labelledby="proj2Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/introduccio"><i class="fa-solid fa-chart-line me-1"></i> Introducció al projecte</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/vectors"><i class="fa-solid fa-cogs me-1"></i> Calculem rumbs amb vectors</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/distancies"><i class="fa-solid fa-cogs me-1"></i> Calculem distàncies amb GPS</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/introduccio"><i class="fa-solid fa-file-lines"></i> Introducció al projecte</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/vectors"><i class="fa-regular fa-compass"></i> Calculem rumbs amb vectors</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/distancies"><i class="fa-solid fa-arrows-left-right-to-line"></i> Calculem distàncies amb GPS</a></li>
             </ul>
           </li>
         </ul>
+        <!-- Botó mode clar/fosc -->
         <button id="themeToggle" class="ms-2"><i class="fa-solid fa-moon"></i></button>
       </div>
     </div>
