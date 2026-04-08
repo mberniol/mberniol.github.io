@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🌫️ Environmental Epidemiological Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .chart-container { position: relative; height: 280px; min-height: 280px; }
+        @media (min-width: 768px) { .chart-container { height: 380px; } }
+        .alert-dot { animation: ping 2s cubic-bezier(0,0,0.2,1) infinite; }
+        @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+        /* Custom scroll for tables */
+        .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+        /* Better touch targets */
+        button, select, label, [role="button"] { cursor: pointer; }
+        select, button { touch-action: manipulation; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-sky-600 to-emerald-600 rounded-2xl sm:rounded-3xl shadow-xl mt-4 sm:mt-6 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-xl rounded-xl sm:rounded-2xl flex items-center justify-center text-3xl sm:text-4xl">🌫️</div>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">Environmental Epidemiological Analysis</h1>
+                    <p class="text-sky-100 text-sm sm:text-base">Pollution • Incidence • Correlations • Peaks • Trends • Delayed Impact</p>
+                </div>
+            </div>
+            <button id="howItWorksBtn" class="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-medium px-4 py-2 sm:px-5 sm:py-3 rounded-xl transition-all flex items-center gap-2 text-sm sm:text-base shadow-md whitespace-nowrap">
+                <span>❓</span> How it works
+            </button>
+        </div>
+
+        <div id="howItWorksModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all duration-300 p-4">
+            <div class="bg-slate-900 border border-slate-600 rounded-2xl sm:rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+                <div class="bg-gradient-to-r from-sky-600/30 to-emerald-600/30 px-4 sm:px-6 py-4 flex justify-between items-center border-b border-slate-700 sticky top-0">
+                    <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">📊 How this tool works</h2>
+                    <button id="closeModalBtn" class="text-slate-300 hover:text-white text-2xl sm:text-3xl leading-none transition-all p-1">&times;</button>
+                </div>
+                <div class="p-4 sm:p-6 space-y-4 text-slate-200 overflow-y-auto flex-1">
+                    <div class="bg-slate-800/50 p-4 rounded-xl border-l-4 border-emerald-500">
+                        <p class="font-semibold text-emerald-400">🎯 Purpose</p>
+                        <p class="text-sm sm:text-base">Analyze the relationship between air pollution (PM₂.₅, NO₂, O₃, etc.) and epidemiological incidence rates. Explore delayed effects (lag), detect extreme incidence peaks, and visualize seasonal trends.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sky-400 flex items-center gap-2">📁 Data requirements</p>
+                        <ul class="list-disc pl-5 space-y-1 mt-1 text-sm sm:text-base text-slate-300">
+                            <li><span class="font-mono text-emerald-400">date</span> (YYYY-MM-DD) and <span class="font-mono text-emerald-400">incidencia_1000</span> (incidence per 1000) are <strong>mandatory</strong>.</li>
+                            <li>Optional: <span class="font-mono">pm2.5</span>, <span class="font-mono">pm10</span>, <span class="font-mono">no2</span>, <span class="font-mono">nox</span>, <span class="font-mono">o3</span>, <span class="font-mono">so2</span>.</li>
+                            <li>CSV format with header, commas or semicolons supported.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sky-400">🚀 How to use</p>
+                        <ol class="list-decimal pl-5 space-y-1 text-sm sm:text-base text-slate-300">
+                            <li>Select a preloaded city dataset or upload your own CSV using <strong>"Browse"</strong>.</li>
+                            <li>Dashboard shows key metrics, trends, and correlation analysis.</li>
+                            <li>Adjust <strong>time filters</strong> to focus on specific periods.</li>
+                            <li>Explore <strong>lagged correlations</strong> (0–7 days) for delayed impact.</li>
+                            <li><strong>Peaks table</strong> shows statistically unusual incidence days.</li>
+                            <li>Monthly bar chart reveals seasonal patterns.</li>
+                        </ol>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <div class="bg-slate-800/70 p-3 rounded-xl">
+                            <p class="font-semibold text-emerald-400">📈 Correlation & p-values</p>
+                            <p class="text-slate-300 text-xs sm:text-sm">Pearson's r + significance. p < 0.05 indicates significant association. Lag analysis reveals delayed effects.</p>
+                        </div>
+                        <div class="bg-slate-800/70 p-3 rounded-xl">
+                            <p class="font-semibold text-amber-400">⚠️ Peak detection</p>
+                            <p class="text-slate-300 text-xs sm:text-sm">Threshold = mean + 2×standard deviation. Helps identify outbreak episodes.</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/30 p-3 rounded-xl text-xs text-slate-400 border border-slate-700">
+                        💡 <span class="font-medium">Tip:</span> For local files use "Browse". Preloaded datasets require a local server (e.g., <span class="font-mono">python -m http.server</span>).
+                    </div>
+                </div>
+                <div class="bg-slate-800 px-4 sm:px-6 py-3 sm:py-4 flex justify-end border-t border-slate-700">
+                    <button id="closeModalFooterBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-xl transition-all text-sm sm:text-base">Got it</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-6 sm:py-8">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8 mb-6 sm:mb-8">
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-semibold mb-4">📍 Select data source</h2>
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                            <select id="citySelector" class="bg-slate-800 text-base sm:text-lg rounded-2xl px-4 py-3 sm:py-4 border border-slate-600 text-white w-full sm:max-w-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
+                                <option value="" selected disabled>— Select a city or upload file —</option>
+                                <option value="merged_df.csv">🏢 Gavà</option>
+                                <option value="merged_df_elprat(jardins).csv">🏢 El Prat de Llobregat (jardins de la pau)</option>
+                                <option value="merged_df_elprat(sagnier).csv">🏢 El Prat de Llobregat (sagnier)</option>
+                                <option value="merged_df_hospitalet.csv">🏢 L'Hospitalet de Llobregat</option>
+                                <option value="merged_df_martorell.csv">🏢 Martorell</option>
+                                <option value="merged_df_palleja.csv">🏢 Pallejà</option>
+                                <option value="merged_df_santandreu.csv">🏢 Sant Andreu de la Barca</option>
+                                <option value="merged_df_santvicenç.csv">🏢 Sant Vicenç dels Horts</option>
+                                <option value="merged_df_viladecans.csv">🏢 Viladecans</option>
+                                <option value="custom">📁 Upload custom file...</option>
+                            </select>
+
+                            <span class="text-slate-500 font-medium text-center sm:text-left">or</span>
+
+                            <div class="w-full sm:w-auto">
+                                <label for="csvInput" class="cursor-pointer bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/50 transition-all px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-emerald-400 font-semibold flex items-center justify-center gap-2 text-base sm:text-lg w-full sm:w-auto">
+                                    📂 Browse
+                                </label>
+                                <input type="file" id="csvInput" accept=".csv" class="hidden">
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 text-xs sm:text-sm bg-slate-800 rounded-2xl p-3 sm:p-4 inline-block w-full sm:w-auto">
+                            <strong>Required columns:</strong> 
+                            <span class="font-mono text-emerald-400">date</span>, 
+                            <span class="font-mono text-emerald-400">incidencia_1000</span><br>
+                            <strong>Optional:</strong> pm2.5, pm10, no2, nox, o3, so2
+                        </div>
+                    </div>
+
+                    <div id="fileStatus" class="hidden mt-2 text-emerald-400 font-medium bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20 text-sm"></div>
+                    <div id="errorStatus" class="hidden mt-2 text-red-400 font-medium bg-red-500/10 p-3 rounded-xl border border-red-500/20 text-sm"></div>
+                    <div id="columnsDetected" class="hidden mt-2 text-xs bg-slate-800 rounded-2xl p-3 border border-slate-700 break-words"></div>
+                </div>
+            </div>
+
+            <div id="dashboard" class="hidden space-y-6 sm:space-y-8">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-6">
+                    <div class="bg-slate-900 border border-slate-700 rounded-2xl p-4 sm:p-6">
+                        <p class="text-xs uppercase text-slate-400">Days analyzed</p>
+                        <p id="totalDays" class="text-3xl sm:text-5xl font-semibold text-white mt-1 sm:mt-2">0</p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-700 rounded-2xl p-4 sm:p-6">
+                        <p class="text-xs uppercase text-slate-400">Mean incidence</p>
+                        <p id="avgIncidence" class="text-3xl sm:text-5xl font-semibold text-white mt-1 sm:mt-2">0</p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-700 rounded-2xl p-4 sm:p-6">
+                        <p class="text-xs uppercase text-slate-400">Mean PM₂.₅</p>
+                        <p id="avgPM25" class="text-3xl sm:text-5xl font-semibold text-white mt-1 sm:mt-2">—</p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-700 rounded-2xl p-4 sm:p-6">
+                        <p class="text-xs uppercase text-slate-400">Mean NO₂</p>
+                        <p id="avgNO2" class="text-3xl sm:text-5xl font-semibold text-white mt-1 sm:mt-2">—</p>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-700 rounded-2xl p-4 sm:p-6 col-span-2 sm:col-span-1 flex flex-col justify-between">
+                        <div><p class="text-xs uppercase text-slate-400">Strongest corr (lag 0)</p>
+                        <p id="strongestCorr" class="text-3xl sm:text-4xl font-semibold text-white">—</p></div>
+                        <div id="corrPollutant" class="text-emerald-400 text-xs sm:text-sm font-medium mt-1"></div>
+                    </div>
+                    <div class="bg-red-500/10 border border-red-500/30 rounded-2xl p-4 sm:p-6 flex items-center col-span-2 sm:col-span-1">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 text-red-400">
+                                <span class="alert-dot inline-block w-2 h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full"></span>
+                                <span class="font-semibold text-sm sm:text-base">Peaks detected</span>
+                            </div>
+                            <p id="peakCount" class="text-3xl sm:text-5xl font-semibold text-red-400 mt-1">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+                    <div class="lg:col-span-8 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-baseline gap-3 mb-4 sm:mb-6">
+                            <h3 class="text-xl sm:text-2xl font-semibold">📅 Temporal trend – Incidence</h3>
+                            <select id="timeFilter" class="bg-slate-800 text-sm rounded-2xl px-3 py-2 border border-slate-600 outline-none w-full sm:w-auto">
+                                <option value="all">Full period</option>
+                                <option value="2020-2025">2020-2025</option>
+                                <option value="2012-2019">2012-2019</option>
+                            </select>
+                        </div>
+                        <div class="chart-container"><canvas id="incidenceTrendChart"></canvas></div>
+                    </div>
+
+                    <div class="lg:col-span-4 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">🌫️ Detected pollutants</h3>
+                        <div class="chart-container"><canvas id="pollutantsTrendChart"></canvas></div>
+                    </div>
+
+                    <div class="lg:col-span-12 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                            <h3 class="text-xl sm:text-2xl font-semibold">🌫️ Pollution ↔ Incidence (lagged impact)</h3>
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                                <select id="scatterPollutant" class="bg-slate-800 text-sm rounded-2xl px-4 py-2 outline-none w-full sm:w-32"></select>
+                                <select id="lagSelector" class="bg-slate-800 text-sm rounded-2xl px-4 py-2 outline-none w-full sm:w-40">
+                                    <option value="0">Lag 0 days</option>
+                                    <option value="1">Lag 1 day</option>
+                                    <option value="2">Lag 2 days</option>
+                                    <option value="3">Lag 3 days</option>
+                                    <option value="4">Lag 4 days</option>
+                                    <option value="5">Lag 5 days</option>
+                                    <option value="6">Lag 6 days</option>
+                                    <option value="7">Lag 7 days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <div class="chart-container"><canvas id="scatterChart"></canvas></div>
+                                <div id="scatterInfo" class="mt-3 text-center text-xs sm:text-sm text-emerald-400 font-medium"></div>
+                            </div>
+                            <div>
+                                <div class="chart-container"><canvas id="correlationBarChart"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">📅 Seasonal trends (monthly average)</h3>
+                        <div class="chart-container"><canvas id="monthlyTrendChart"></canvas></div>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">⚠️ Peak detection</h3>
+                        <div class="overflow-x-auto rounded-xl border border-slate-700">
+                            <table id="peaksTable" class="w-full text-xs sm:text-sm min-w-[500px]">
+                                <thead class="sticky top-0 bg-slate-800">
+                                    <tr class="text-slate-400 text-xs">
+                                        <th class="px-3 sm:px-6 py-3 text-left">Date</th>
+                                        <th class="px-3 sm:px-6 py-3 text-left">Incidence</th>
+                                        <th class="px-3 sm:px-6 py-3 text-left">PM₂.₅</th>
+                                        <th class="px-3 sm:px-6 py-3 text-left">NO₂</th>
+                                        <th class="px-3 sm:px-6 py-3 text-left">O₃</th>
+                                        <th class="px-3 sm:px-6 py-3 text-left">Alert</th>
+                                     </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-700"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let rawData = [];
+        let filteredData = [];
+        let incidenceChart, pollutantsChart, scatterChart, corrChart, monthlyChart;
+        let availablePollutants = [];
+
+        function showError(msg, details = '') {
+            const errDiv = document.getElementById('errorStatus');
+            errDiv.innerHTML = `❌ <strong>Error:</strong> ${msg} ${details ? `<br><span class="text-xs text-red-300">${details}</span>` : ''}`;
+            errDiv.classList.remove('hidden');
+            document.getElementById('fileStatus').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('columnsDetected').classList.add('hidden');
+            rawData = [];
+            filteredData = [];
+            console.error(msg, details);
+        }
+
+        function validateRequiredColumns(row) {
+            const required = ['date', 'incidencia_1000'];
+            const missing = required.filter(col => !(col in row)); // CANVI 1: Només comprova si la clau existeix a l'encapçalament
+            if (missing.length) throw new Error(`Required columns missing: ${missing.join(', ')}.`);
+        }
+
+        function processCSVText(csvText, fileName) {
+            const statusDiv = document.getElementById('fileStatus');
+            const columnsDiv = document.getElementById('columnsDetected');
+            try {
+                const result = Papa.parse(csvText, { header: true, skipEmptyLines: true, dynamicTyping: true, transformHeader: h => h.toLowerCase().trim() });
+                if (result.errors.length) {
+                    showError(`CSV parsing issue: ${result.errors[0].message}`, "Check delimiters/quotes.");
+                    return;
+                }
+                let rows = result.data;
+                if (!rows.length) throw new Error("CSV file is empty.");
+                rows = rows.map(row => {
+                    const newRow = {};
+                    Object.keys(row).forEach(k => { let val = row[k]; if (val === 'NA' || val === '' || val === null) val = null; newRow[k] = val; });
+                    if (newRow['pm2.5'] !== undefined) newRow['pm2_5'] = newRow['pm2.5'];
+                    return newRow;
+                });
+                validateRequiredColumns(rows[0]);
+                const validRows = rows.filter(row => {
+                    const date = new Date(row.date);
+                    return row.date && !isNaN(date.getTime()); // CANVI 2: Permet files encara que la incidència sigui nul·la (per dibuixar contaminants)
+                });
+                if (!validRows.length) throw new Error("No valid rows with date.");
+                if (validRows.length < rows.length) statusDiv.innerHTML = `<span class="text-yellow-400">⚠️ ${rows.length - validRows.length} rows ignored due to invalid dates.</span><br>`;
+                rawData = validRows.sort((a,b) => new Date(a.date) - new Date(b.date));
+                const sample = rawData[0];
+                availablePollutants = [];
+                if (sample['pm2_5'] !== undefined) availablePollutants.push('pm2.5');
+                if (sample.pm10 !== undefined) availablePollutants.push('pm10');
+                if (sample.no2 !== undefined) availablePollutants.push('no2');
+                if (sample.nox !== undefined) availablePollutants.push('nox');
+                if (sample.o3 !== undefined) availablePollutants.push('o3');
+                if (sample.so2 !== undefined) availablePollutants.push('so2');
+                statusDiv.innerHTML = `✅ <span class="font-mono text-white">${fileName}</span> loaded • ${rawData.length} valid days`;
+                statusDiv.classList.remove('hidden');
+                document.getElementById('errorStatus').classList.add('hidden');
+                const colsHtml = availablePollutants.length ? `Detected: ${availablePollutants.map(c => `<span class="inline-block px-2 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full text-xs mr-1 mb-1">${c}</span>`).join('')}` : 'Only date & incidence columns.';
+                columnsDiv.innerHTML = colsHtml;
+                columnsDiv.classList.remove('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                filteredData = [...rawData];
+                buildAllCharts();
+            } catch (err) {
+                showError(err.message, "Verify CSV format & columns.");
+                document.getElementById('dashboard').classList.add('hidden');
+                columnsDiv.classList.add('hidden');
+            }
+        }
+
+        async function fetchCSV(filename) {
+            try {
+                const response = await fetch(filename);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const csvText = await response.text();
+                processCSVText(csvText, filename);
+            } catch (error) {
+                showError(`Cannot load "${filename}".`, "Use 'Browse' button or run local server.");
+            }
+        }
+
+        function setupEventListeners() {
+            const selector = document.getElementById('citySelector');
+            const fileInput = document.getElementById('csvInput');
+            selector.addEventListener('change', (e) => {
+                const val = e.target.value;
+                if (!val) return;
+                if (val === 'custom') fileInput.click();
+                else fetchCSV(val);
+            });
+            fileInput.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                selector.value = 'custom';
+                const reader = new FileReader();
+                reader.onload = ev => processCSVText(ev.target.result, file.name);
+                reader.onerror = () => showError("File read error.");
+                reader.readAsText(file, 'UTF-8');
+            });
+            document.getElementById('timeFilter').addEventListener('change', refreshCharts);
+            document.getElementById('scatterPollutant').addEventListener('change', updateScatter);
+            document.getElementById('lagSelector').addEventListener('change', updateScatter);
+        }
+
+        // Statistics
+        function erf(x) { const sign = (x >= 0) ? 1 : -1; x = Math.abs(x); const t = 1 / (1 + 0.3275911 * x); const y = 1.0 - (((((1.061405429 * t + -1.453152027) * t + 1.421413741) * t + -0.284496736) * t + 0.254829592) * t) * Math.exp(-x * x); return sign * y; }
+        function normalCDF(z) { return 0.5 * (1 + erf(z / Math.sqrt(2))); }
+        function pearsonPValue(r, n) { if (n < 3 || isNaN(r) || Math.abs(r) >= 1 - 1e-10) return NaN; const t = Math.abs(r) * Math.sqrt((n - 2) / (1 - r * r)); return 2 * (1 - normalCDF(t)); }
+        function pearsonCorrelation(arr1, arr2) { let x = [], y = []; for (let i = 0; i < arr1.length; i++) if (arr1[i] != null && arr2[i] != null) { x.push(arr1[i]); y.push(arr2[i]); } if (x.length < 2) return NaN; const n = x.length, sumX = x.reduce((a,b)=>a+b,0), sumY = y.reduce((a,b)=>a+b,0), sumXY = x.reduce((a,b,i)=>a + b*y[i],0), sumX2 = x.reduce((a,b)=>a + b*b,0), sumY2 = y.reduce((a,b)=>a + b*b,0); const num = n*sumXY - sumX*sumY, den = Math.sqrt((n*sumX2 - sumX*sumX) * (n*sumY2 - sumY*sumY)); return den === 0 ? NaN : num / den; }
+        function computePearsonWithP(incData, pollData, lag = 0) { const n = incData.length; if (lag >= n) return { r: NaN, p: NaN, nPairs: 0 }; let x = [], y = []; for (let i = 0; i < n - lag; i++) { const pVal = pollData[i], iVal = incData[i + lag]; if (pVal != null && iVal != null) { x.push(pVal); y.push(iVal); } } const r = pearsonCorrelation(x, y); const nPairs = x.length; const p = pearsonPValue(r, nPairs); return { r, p, nPairs }; }
+        function calculateStats() { const inc = filteredData.map(r => r.incidencia_1000).filter(v => v != null); const pm = filteredData.map(r => r['pm2_5']).filter(v => v != null); const no2v = filteredData.map(r => r.no2).filter(v => v != null); const avgInc = inc.length ? inc.reduce((a,b)=>a+b,0)/inc.length : 0; const avgPM = pm.length ? pm.reduce((a,b)=>a+b,0)/pm.length : null; const avgNO2 = no2v.length ? no2v.reduce((a,b)=>a+b,0)/no2v.length : null; document.getElementById('totalDays').textContent = filteredData.length; document.getElementById('avgIncidence').textContent = avgInc.toFixed(2); document.getElementById('avgPM25').textContent = avgPM !== null ? avgPM.toFixed(1) : '—'; document.getElementById('avgNO2').textContent = avgNO2 !== null ? avgNO2.toFixed(1) : '—'; return { incidences: inc, avgInc }; }
+        function renderPeaksTable() { const tbody = document.querySelector('#peaksTable tbody'); tbody.innerHTML = ''; const inc = filteredData.map(r => r.incidencia_1000).filter(Boolean); if (!inc.length) return; const mean = inc.reduce((a,b)=>a+b,0)/inc.length, std = Math.sqrt(inc.reduce((a,b)=>a+Math.pow(b-mean,2),0)/inc.length), threshold = mean + 2*std; const peaks = filteredData.filter(row => row.incidencia_1000 > threshold).sort((a,b)=>b.incidencia_1000 - a.incidencia_1000).slice(0,15); document.getElementById('peakCount').textContent = peaks.length; peaks.forEach(row => { const tr = document.createElement('tr'); tr.className = 'hover:bg-slate-800 transition-colors'; tr.innerHTML = `<td class="px-3 sm:px-6 py-3 font-mono">${row.date}</td><td class="px-3 sm:px-6 py-3 text-red-400 font-semibold">${row.incidencia_1000.toFixed(2)}</td><td class="px-3 sm:px-6 py-3">${row['pm2_5'] != null ? row['pm2_5'].toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3">${row.no2 != null ? row.no2.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3">${row.o3 != null ? row.o3.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3"><span class="px-2 py-1 text-xs bg-red-500/20 text-red-400 rounded-full">HIGH PEAK</span></td>`; tbody.appendChild(tr); }); if (!peaks.length) tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No significant peaks detected</td></tr>`; }
+        function updateScatter() { const selected = document.getElementById('scatterPollutant').value; const lag = parseInt(document.getElementById('lagSelector').value) || 0; const incVals = filteredData.map(r => r.incidencia_1000); const pollVals = filteredData.map(r => selected === 'pm2.5' ? r['pm2_5'] || null : r[selected] || null); const stats = computePearsonWithP(incVals, pollVals, lag); const points = []; const n = filteredData.length; for (let i = 0; i < n - lag; i++) { const p = pollVals[i], inc = incVals[i+lag]; if (p != null && inc != null) points.push({ x: p, y: inc }); } if (scatterChart) scatterChart.destroy(); scatterChart = new Chart(document.getElementById('scatterChart'), { type: 'scatter', data: { datasets: [{ label: `${selected.toUpperCase()} (t) vs Incidence (t+${lag})`, data: points, backgroundColor: '#0ea5e9', pointRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { title: { display: true, text: `${selected.toUpperCase()} (day t)` } }, y: { title: { display: true, text: `Incidence / 1,000 (day t+${lag})` } } } } }); let pText = isNaN(stats.p) ? '—' : stats.p.toFixed(4); let sig = ''; if (!isNaN(stats.p)) { if (stats.p < 0.01) sig = ' <span class="text-emerald-400">(*** highly significant)</span>'; else if (stats.p < 0.05) sig = ' <span class="text-emerald-400">(* significant)</span>'; } document.getElementById('scatterInfo').innerHTML = `<strong>Pearson correlation (lag ${lag} days)</strong><br>r = <strong>${isNaN(stats.r) ? '—' : stats.r.toFixed(3)}</strong><br>p-value = <strong>${pText}</strong>${sig}<br><span class="text-xs text-slate-400">Valid pairs: ${stats.nPairs}</span>`; }
+        function buildAllCharts() {
+            const dates = filteredData.map(r => r.date), incVals = filteredData.map(r => r.incidencia_1000);
+            calculateStats();
+            if (incidenceChart) incidenceChart.destroy();
+            incidenceChart = new Chart(document.getElementById('incidenceTrendChart'), { type: 'line', data: { labels: dates, datasets: [{ label: 'Incidence', data: incVals, borderColor: '#0ea5e9', tension: 0.2, borderWidth: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#334155' } }, y: { grid: { color: '#334155' } } } } });
+            const pollutantDatasets = []; if (filteredData[0] && filteredData[0]['pm2_5'] !== undefined) pollutantDatasets.push({ label: 'PM2.5', data: filteredData.map(r => r['pm2_5'] || null), borderColor: '#f59e0b', borderWidth: 2 }); if (filteredData[0] && filteredData[0].pm10 !== undefined) pollutantDatasets.push({ label: 'PM10', data: filteredData.map(r => r.pm10 || null), borderColor: '#0ea5e9', borderWidth: 2 }); if (filteredData[0] && filteredData[0].no2 !== undefined) pollutantDatasets.push({ label: 'NO₂', data: filteredData.map(r => r.no2 || null), borderColor: '#ef4444', borderWidth: 2 }); if (filteredData[0] && filteredData[0].nox !== undefined) pollutantDatasets.push({ label: 'NOx', data: filteredData.map(r => r.nox || null), borderColor: '#8b5cf6', borderWidth: 2 }); if (filteredData[0] && filteredData[0].o3 !== undefined) pollutantDatasets.push({ label: 'O₃', data: filteredData.map(r => r.o3 || null), borderColor: '#10b981', borderWidth: 2 }); if (filteredData[0] && filteredData[0].so2 !== undefined) pollutantDatasets.push({ label: 'SO₂', data: filteredData.map(r => r.so2 || null), borderColor: '#f43f5e', borderWidth: 2 });
+            if (pollutantsChart) pollutantsChart.destroy();
+            pollutantsChart = new Chart(document.getElementById('pollutantsTrendChart'), { type: 'line', data: { labels: dates, datasets: pollutantDatasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { x: { display: false } } } });
+            const select = document.getElementById('scatterPollutant'); select.innerHTML = ''; availablePollutants.forEach(p => { const opt = document.createElement('option'); opt.value = p; opt.textContent = p.toUpperCase(); select.appendChild(opt); }); if (availablePollutants.length) updateScatter();
+            const corrVals = availablePollutants.map(p => { const poll = filteredData.map(r => p === 'pm2.5' ? r['pm2_5'] || null : r[p] || null); return pearsonCorrelation(incVals, poll); });
+            if (corrChart) corrChart.destroy();
+            corrChart = new Chart(document.getElementById('correlationBarChart'), { type: 'bar', data: { labels: availablePollutants.map(p => p.toUpperCase()), datasets: [{ label: 'Correlation (lag 0)', data: corrVals, backgroundColor: corrVals.map(v => isNaN(v) ? '#64748b' : (v > 0 ? '#10b981' : '#ef4444')) }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: -1, max: 1 } } } });
+            let maxIdx = 0; for (let i = 1; i < corrVals.length; i++) if (!isNaN(corrVals[i]) && Math.abs(corrVals[i]) > Math.abs(corrVals[maxIdx])) maxIdx = i; const strongest = corrVals[maxIdx]; document.getElementById('strongestCorr').innerHTML = isNaN(strongest) ? '—' : strongest.toFixed(3); document.getElementById('corrPollutant').textContent = availablePollutants[maxIdx] ? availablePollutants[maxIdx].toUpperCase() + ' (lag 0)' : '—';
+            
+            // CANVI 3: Només se suma a la mitjana mensual si la incidència no és nul·la
+            const monthly = {}; 
+            filteredData.forEach(row => { 
+                const d = new Date(row.date); 
+                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; 
+                if (!monthly[key]) monthly[key] = {sum:0, count:0}; 
+                if (row.incidencia_1000 != null) { 
+                    monthly[key].sum += row.incidencia_1000; 
+                    monthly[key].count++; 
+                } 
+            }); 
+            const monthlyLabels = Object.keys(monthly).sort(); 
+            const monthlyAvg = monthlyLabels.map(k => monthly[k].count > 0 ? monthly[k].sum / monthly[k].count : null);
+            
+            if (monthlyChart) monthlyChart.destroy();
+            monthlyChart = new Chart(document.getElementById('monthlyTrendChart'), { type: 'bar', data: { labels: monthlyLabels, datasets: [{ label: 'Monthly average', data: monthlyAvg, backgroundColor: '#0ea5e9' }] }, options: { responsive: true, maintainAspectRatio: false } });
+            renderPeaksTable();
+        }
+        function filterData(mode) { if (mode === 'all') filteredData = [...rawData]; else if (mode === '2020-2025') filteredData = rawData.filter(r => new Date(r.date).getFullYear() >= 2020); else if (mode === '2012-2019') filteredData = rawData.filter(r => new Date(r.date).getFullYear() < 2020); }
+        function refreshCharts() { filterData(document.getElementById('timeFilter').value); buildAllCharts(); }
+        function initModal() { const modal = document.getElementById('howItWorksModal'), openBtn = document.getElementById('howItWorksBtn'), closeBtns = [document.getElementById('closeModalBtn'), document.getElementById('closeModalFooterBtn')]; openBtn.onclick = () => modal.classList.remove('hidden'); closeBtns.forEach(btn => btn.onclick = () => modal.classList.add('hidden')); modal.onclick = (e) => { if (e.target === modal) modal.classList.add('hidden'); }; }
+        window.onload = () => { setupEventListeners(); initModal(); };
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
