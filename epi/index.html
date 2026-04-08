@@ -27,7 +27,6 @@
 <body class="bg-slate-950 text-slate-200 antialiased">
 
     <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header with modal trigger - responsive padding -->
         <div class="bg-gradient-to-r from-sky-600 to-emerald-600 rounded-2xl sm:rounded-3xl shadow-xl mt-4 sm:mt-6 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
                 <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-xl rounded-xl sm:rounded-2xl flex items-center justify-center text-3xl sm:text-4xl">🌫️</div>
@@ -41,7 +40,6 @@
             </button>
         </div>
 
-        <!-- MODAL: responsive + touch-friendly -->
         <div id="howItWorksModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all duration-300 p-4">
             <div class="bg-slate-900 border border-slate-600 rounded-2xl sm:rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
                 <div class="bg-gradient-to-r from-sky-600/30 to-emerald-600/30 px-4 sm:px-6 py-4 flex justify-between items-center border-b border-slate-700 sticky top-0">
@@ -92,9 +90,7 @@
             </div>
         </div>
 
-        <!-- Main content -->
         <div class="py-6 sm:py-8">
-            <!-- Data source card - responsive stacking -->
             <div class="bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8 mb-6 sm:mb-8">
                 <div class="flex flex-col gap-6">
                     <div>
@@ -138,9 +134,7 @@
                 </div>
             </div>
 
-            <!-- Dashboard - fully responsive grid -->
             <div id="dashboard" class="hidden space-y-6 sm:space-y-8">
-                <!-- KPI cards -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-6">
                     <div class="bg-slate-900 border border-slate-700 rounded-2xl p-4 sm:p-6">
                         <p class="text-xs uppercase text-slate-400">Days analyzed</p>
@@ -174,9 +168,7 @@
                     </div>
                 </div>
 
-                <!-- Charts grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-                    <!-- Incidence trend -->
                     <div class="lg:col-span-8 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-baseline gap-3 mb-4 sm:mb-6">
                             <h3 class="text-xl sm:text-2xl font-semibold">📅 Temporal trend – Incidence</h3>
@@ -189,13 +181,11 @@
                         <div class="chart-container"><canvas id="incidenceTrendChart"></canvas></div>
                     </div>
 
-                    <!-- Pollutants trend -->
                     <div class="lg:col-span-4 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">🌫️ Detected pollutants</h3>
                         <div class="chart-container"><canvas id="pollutantsTrendChart"></canvas></div>
                     </div>
 
-                    <!-- Correlation & scatter section -->
                     <div class="lg:col-span-12 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <h3 class="text-xl sm:text-2xl font-semibold">🌫️ Pollution ↔ Incidence (lagged impact)</h3>
@@ -224,7 +214,6 @@
                         </div>
                     </div>
 
-                    <!-- Monthly trends and peaks table -->
                     <div class="lg:col-span-7 bg-slate-900 border border-slate-700 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
                         <h3 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">📅 Seasonal trends (monthly average)</h3>
                         <div class="chart-container"><canvas id="monthlyTrendChart"></canvas></div>
@@ -273,7 +262,7 @@
 
         function validateRequiredColumns(row) {
             const required = ['date', 'incidencia_1000'];
-            const missing = required.filter(col => !(col in row) || row[col] === undefined || row[col] === null);
+            const missing = required.filter(col => !(col in row)); // CANVI 1: Només comprova si la clau existeix a l'encapçalament
             if (missing.length) throw new Error(`Required columns missing: ${missing.join(', ')}.`);
         }
 
@@ -297,10 +286,10 @@
                 validateRequiredColumns(rows[0]);
                 const validRows = rows.filter(row => {
                     const date = new Date(row.date);
-                    return row.date && !isNaN(date.getTime()) && row.incidencia_1000 != null;
+                    return row.date && !isNaN(date.getTime()); // CANVI 2: Permet files encara que la incidència sigui nul·la (per dibuixar contaminants)
                 });
-                if (!validRows.length) throw new Error("No valid rows with date and incidence.");
-                if (validRows.length < rows.length) statusDiv.innerHTML = `<span class="text-yellow-400">⚠️ ${rows.length - validRows.length} rows ignored due to invalid data.</span><br>`;
+                if (!validRows.length) throw new Error("No valid rows with date.");
+                if (validRows.length < rows.length) statusDiv.innerHTML = `<span class="text-yellow-400">⚠️ ${rows.length - validRows.length} rows ignored due to invalid dates.</span><br>`;
                 rawData = validRows.sort((a,b) => new Date(a.date) - new Date(b.date));
                 const sample = rawData[0];
                 availablePollutants = [];
@@ -360,7 +349,7 @@
             document.getElementById('lagSelector').addEventListener('change', updateScatter);
         }
 
-        // Statistics (same as original)
+        // Statistics
         function erf(x) { const sign = (x >= 0) ? 1 : -1; x = Math.abs(x); const t = 1 / (1 + 0.3275911 * x); const y = 1.0 - (((((1.061405429 * t + -1.453152027) * t + 1.421413741) * t + -0.284496736) * t + 0.254829592) * t) * Math.exp(-x * x); return sign * y; }
         function normalCDF(z) { return 0.5 * (1 + erf(z / Math.sqrt(2))); }
         function pearsonPValue(r, n) { if (n < 3 || isNaN(r) || Math.abs(r) >= 1 - 1e-10) return NaN; const t = Math.abs(r) * Math.sqrt((n - 2) / (1 - r * r)); return 2 * (1 - normalCDF(t)); }
@@ -382,7 +371,21 @@
             if (corrChart) corrChart.destroy();
             corrChart = new Chart(document.getElementById('correlationBarChart'), { type: 'bar', data: { labels: availablePollutants.map(p => p.toUpperCase()), datasets: [{ label: 'Correlation (lag 0)', data: corrVals, backgroundColor: corrVals.map(v => isNaN(v) ? '#64748b' : (v > 0 ? '#10b981' : '#ef4444')) }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: -1, max: 1 } } } });
             let maxIdx = 0; for (let i = 1; i < corrVals.length; i++) if (!isNaN(corrVals[i]) && Math.abs(corrVals[i]) > Math.abs(corrVals[maxIdx])) maxIdx = i; const strongest = corrVals[maxIdx]; document.getElementById('strongestCorr').innerHTML = isNaN(strongest) ? '—' : strongest.toFixed(3); document.getElementById('corrPollutant').textContent = availablePollutants[maxIdx] ? availablePollutants[maxIdx].toUpperCase() + ' (lag 0)' : '—';
-            const monthly = {}; filteredData.forEach(row => { const d = new Date(row.date); const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; if (!monthly[key]) monthly[key] = {sum:0, count:0}; monthly[key].sum += row.incidencia_1000; monthly[key].count++; }); const monthlyLabels = Object.keys(monthly).sort(); const monthlyAvg = monthlyLabels.map(k => monthly[k].sum / monthly[k].count);
+            
+            // CANVI 3: Només se suma a la mitjana mensual si la incidència no és nul·la
+            const monthly = {}; 
+            filteredData.forEach(row => { 
+                const d = new Date(row.date); 
+                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; 
+                if (!monthly[key]) monthly[key] = {sum:0, count:0}; 
+                if (row.incidencia_1000 != null) { 
+                    monthly[key].sum += row.incidencia_1000; 
+                    monthly[key].count++; 
+                } 
+            }); 
+            const monthlyLabels = Object.keys(monthly).sort(); 
+            const monthlyAvg = monthlyLabels.map(k => monthly[k].count > 0 ? monthly[k].sum / monthly[k].count : null);
+            
             if (monthlyChart) monthlyChart.destroy();
             monthlyChart = new Chart(document.getElementById('monthlyTrendChart'), { type: 'bar', data: { labels: monthlyLabels, datasets: [{ label: 'Monthly average', data: monthlyAvg, backgroundColor: '#0ea5e9' }] }, options: { responsive: true, maintainAspectRatio: false } });
             renderPeaksTable();
@@ -394,11 +397,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
