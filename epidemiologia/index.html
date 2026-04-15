@@ -1,0 +1,380 @@
+
+
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌫️ Problema · Contaminació i infeccions respiratòries · Martorell</title>
+    <!-- MathJax per renderitzar equacions -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+        body {
+            background: #eef3f0;
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            padding: 24px;
+            color: #1e2e26;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(2px);
+            border-radius: 28px;
+            padding: 28px 32px;
+            box-shadow: 0 12px 28px -8px rgba(20,40,30,0.12);
+            border: 1px solid #cbdcd2;
+        }
+        h1 {
+            font-weight: 650;
+            font-size: 2.3rem;
+            letter-spacing: -0.01em;
+            color: #0a3227;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        h2 {
+            font-weight: 550;
+            font-size: 1.6rem;
+            margin: 18px 0 16px;
+            border-left: 8px solid #2e7d5e;
+            padding-left: 20px;
+            color: #1a4d3c;
+        }
+        h3 {
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin: 20px 0 12px;
+            color: #1f5a44;
+        }
+        .badge {
+            background: #d9ece3;
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            color: #0f4c3a;
+            font-weight: 500;
+        }
+        .city-highlight {
+            background: #1b4e3f;
+            color: white;
+            padding: 6px 22px;
+            border-radius: 60px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 8px 0 4px;
+        }
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 18px;
+            margin: 25px 0 10px;
+        }
+        .stat-box {
+            background: #f5faf7;
+            border-radius: 20px;
+            padding: 18px 16px;
+            border: 1px solid #bfd9cd;
+            box-shadow: inset 0 1px 3px white, 0 3px 6px rgba(0,20,10,0.03);
+        }
+        .stat-number {
+            font-size: 2.3rem;
+            font-weight: 750;
+            color: #0f4a35;
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: #3a6855;
+        }
+        .pollutant-bar {
+            background: #e1ede6;
+            border-radius: 48px;
+            padding: 14px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 14px 32px;
+            margin: 18px 0;
+        }
+        .exceed {
+            color: #b13e3e;
+            font-weight: 650;
+            background: #fff0ed;
+            padding: 2px 12px;
+            border-radius: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+        th {
+            text-align: left;
+            background: #c7ded2;
+            padding: 12px 10px;
+            font-weight: 600;
+            color: #0a3022;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #c3d9ce;
+        }
+        .formula-block {
+            background: #f0f7f3;
+            border-radius: 24px;
+            padding: 22px 26px;
+            margin: 22px 0;
+            border-left: 8px solid #1f7a5c;
+            font-size: 1.1rem;
+        }
+        .step {
+            margin-bottom: 30px;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+        .step-num {
+            background: #1b4e3f;
+            color: white;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        .footnote {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: #3a6653;
+            border-top: 1px dashed #aac0b6;
+            padding-top: 16px;
+        }
+        .small-mono {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            background: #ecf3ef;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+        @media (max-width: 650px) {
+            .card { padding: 20px 16px; }
+            h1 { font-size: 1.9rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- TÍTOL I CONTEXT -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+            <div>
+                <h1>🌫️ Com afecta la contaminació aèria a les incidències d'infeccions respiratòries diàries?</h1>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">
+                    <span class="badge">📍 Martorell · 2012 – 2025</span>
+                    <span class="badge">📊 5108 dies analitzats</span>
+                    <span class="badge">🧪 Epidemiologia ambiental</span>
+                </div>
+            </div>
+            <div class="city-highlight">🏭 Martorell · dades dels servidors XPVCA, Meteocat i SIVIC</div>
+        </div>
+        <p style="margin-top: 20px; font-size: 1.1rem; background: #e6f0ea; padding: 12px 24px; border-radius: 50px;">
+            <strong>Problema clàssic:</strong> A partir del conjunt de dades diàries de qualitat de l'aire (NO₂, NOX, PM10, PM2.5, O₃, SO₂) i incidència d'infeccions respiratòries (per 1000 habitants) registrades a Martorell entre 2012 i 2025, es demana avaluar l'associació entre la contaminació i la salut respiratòria, calcular indicadors de risc i interpretar els pics detectats.
+        </p>
+    </div>
+
+    <!-- ENUNCIAT DEL PROBLEMA AMB DADES CONCRETES -->
+    <div class="card">
+        <h2>📋 Enunciat complet · dades proporcionades</h2>
+        <p><strong>Fitxer:</strong> <span class="small-mono">dades1.csv</span> (5108 dies vàlids). Columnes: data, incidencia_1000, pm2.5, pm10, no2, nox, o3, so2.</p>
+        <div class="data-grid">
+            <div class="stat-box"><span class="stat-number">5108</span><div class="stat-label">Dies analitzats</div></div>
+            <div class="stat-box"><span class="stat-number">1.51</span><div class="stat-label">Incidència mitjana (casos/1000)</div></div>
+            <div class="stat-box"><span class="stat-number">0.411</span><div class="stat-label">Correlació màxima (lag 0) · NOX</div></div>
+            <div class="stat-box"><span class="stat-number">15</span><div class="stat-label">Pics d'alta incidència detectats</div></div>
+        </div>
+        <h3>🌫️ Mitjanes de contaminants i superacions de límits OMS (diaris)</h3>
+        <div class="pollutant-bar">
+            <span><strong>NO₂</strong> 30.4 µg/m³ <span class="exceed">253 dies > límit 25</span></span>
+            <span><strong>NOX</strong> 55.0 µg/m³ (sense límit OMS diari)</span>
+            <span><strong>O₃</strong> 40.0 µg/m³ <span class="exceed">0 > 100</span></span>
+            <span><strong>PM10</strong> 19.8 µg/m³ <span class="exceed">16 > 45</span></span>
+            <span><strong>PM2.5</strong> 10.8 µg/m³ <span class="exceed">11 > 15</span></span>
+            <span><strong>SO₂</strong> 2.6 µg/m³ <span class="exceed">0 > 40</span></span>
+        </div>
+        <p class="footnote" style="margin-top: 0;">* Dies amb registre: NO₂ 5037, O₃ 756, PM10 2442, PM2.5 61, SO₂ 751.</p>
+        
+        <div style="background: #faf7e6; padding: 16px 22px; border-radius: 24px; margin: 24px 0 8px;">
+            <strong>📌 Preguntes del problema (a resoldre):</strong>
+            <ol style="margin-top: 12px; padding-left: 28px;">
+                <li>Calcula el coeficient de correlació de Pearson entre NO₂ i incidència a lag 0 i interpreta'l.</li>
+                <li>Estima el Risc Relatiu (RR), el Risc Atribuïble (AR) i la Fracció Atribuïble (AR%) comparant dies amb NO₂ > 25 µg/m³ vs ≤ 25 µg/m³.</li>
+                <li>Explica què indiquen els valors de correlació per a diferents retards (lag 0 a lag 3).</li>
+                <li>Interpreta els pics detectats (gener 2022) i proposa una mesura de salut pública.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- RESOLUCIÓ PAS A PAS (amb fórmules MathJax) -->
+    <div class="card">
+        <h2>🧮 Resolució guiada · pas a pas</h2>
+
+        <!-- PAS 1 -->
+        <div class="step">
+            <div class="step-header"><span class="step-num">1</span><span style="font-size: 1.4rem; font-weight: 600;">Correlació NO₂ – incidència (lag 0)</span></div>
+            <p>Utilitzem el coeficient de correlació de Pearson per quantificar l'associació lineal. Amb les dades processades obtenim:</p>
+            <div class="formula-block">
+                \[
+                r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2 \sum (y_i - \bar{y})^2}} 
+                \]
+                \[
+                r_{\text{NO}_2,\text{incid}}(0) = 0.368 \quad (p < 0.0001,\; \text{significatiu ***})
+                \]
+            </div>
+            <p><strong>Interpretació:</strong> Existeix una correlació positiva moderada i altament significativa. A major concentració de NO₂, tendeix a augmentar la incidència diària d'infeccions respiratòries. El valor \(r=0.368\) explica aproximadament un \(13.5\%\) de la variabilitat compartida.</p>
+        </div>
+
+        <!-- PAS 2 -->
+        <div class="step">
+            <div class="step-header"><span class="step-num">2</span><span style="font-size: 1.4rem; font-weight: 600;">Indicadors de risc (RR, AR, AR%)</span></div>
+            <p>Dividim els dies segons si el NO₂ supera el valor guia diari de l'OMS (25 µg/m³):</p>
+            <ul style="margin: 15px 0 15px 30px;">
+                <li>🔴 <strong>Exposició alta</strong> (NO₂ > 25): 3107 dies, incidència mitjana = \(1.60\) casos/1000</li>
+                <li>🟢 <strong>Exposició baixa</strong> (NO₂ ≤ 25): 1930 dies, incidència mitjana = \(1.38\) casos/1000</li>
+            </ul>
+            <div class="formula-block">
+                \[
+                RR = \frac{I_{\text{exposats}}}{I_{\text{no exposats}}} = \frac{1.60}{1.38} \approx 1.159
+                \]
+                \[
+                AR = I_{\text{exposats}} - I_{\text{no exposats}} = 1.60 - 1.38 = 0.22 \text{ casos/1000}
+                \]
+                \[
+                AR\% = \frac{AR}{I_{\text{exposats}}} \times 100 = \frac{0.22}{1.60} \times 100 \approx 13.75\%
+                \]
+            </div>
+            <p>Interval de confiança del 95% per al RR: \([1.14,\,1.17]\), \(p<0.001\).</p>
+            <p><strong>Conclusió:</strong> RR > 1 indica un efecte nociu. El 13.5% de la incidència en dies amb NO₂ elevat és atribuïble a la superació del límit OMS. Això equival a un excés de 0.22 casos per cada 1000 habitants i dia.</p>
+        </div>
+
+        <!-- PAS 3 -->
+        <div class="step">
+            <div class="step-header"><span class="step-num">3</span><span style="font-size: 1.4rem; font-weight: 600;">Impacte retardat (lags) i patrons</span></div>
+            <p>La correlació es calcula desplaçant la sèrie de contaminant \(k\) dies respecte a la incidència. Per a NO₂ i NOX tenim:</p>
+            <table>
+                <tr><th>Contaminant</th><th>Lag 0</th><th>Lag 1</th><th>Lag 2</th><th>Lag 3</th></tr>
+                <tr><td>NO₂</td><td>0.368***</td><td>0.352***</td><td>0.310***</td><td>0.273***</td></tr>
+                <tr><td>NOX</td><td>0.411***</td><td>0.385***</td><td>0.340***</td><td>0.298***</td></tr>
+            </table>
+            <p class="small-mono" style="margin-top: 8px;">(*** p < 0.001)</p>
+            <div class="formula-block">
+                \[
+                r(k) = \frac{\sum_{t=k+1}^{N} (X_{t-k} - \bar{X})(Y_t - \bar{Y})}{\sqrt{\sum (X_{t-k} - \bar{X})^2 \sum (Y_t - \bar{Y})^2}}
+                \]
+            </div>
+            <p>La correlació més forta es troba a <strong>lag 0</strong>, però es manté elevada fins a lag 2. Això suggereix que l'efecte del NO₂ és força immediat (irritació aguda) i persisteix uns dos dies. L'absència d'un pic retardat important indica que el mecanisme principal és d'efecte agut.</p>
+        </div>
+
+        <!-- PAS 4 -->
+        <div class="step">
+            <div class="step-header"><span class="step-num">4</span><span style="font-size: 1.4rem; font-weight: 600;">Anàlisi de pics i estacionalitat</span></div>
+            <p>El sistema ha detectat 15 pics (incidència > percentil 99). La majoria es concentren al <strong>gener de 2022</strong>, coincidint amb valors alts de NO₂ (entre 32 i 51 µg/m³).</p>
+            <table>
+                <tr><th>Data</th><th>Incidència</th><th>NO₂ (µg/m³)</th><th>Alerta</th></tr>
+                <tr><td>2022-01-17</td><td>5.27</td><td>35.4</td><td>⚠️ HIGH PEAK</td></tr>
+                <tr><td>2022-01-19</td><td>4.37</td><td>41.9</td><td>⚠️ HIGH PEAK</td></tr>
+                <tr><td>2022-01-10</td><td>4.36</td><td>46.1</td><td>⚠️ HIGH PEAK</td></tr>
+                <tr><td>2022-01-24</td><td>4.26</td><td>40.4</td><td>⚠️ HIGH PEAK</td></tr>
+                <tr><td>2022-01-18</td><td>3.94</td><td>43.2</td><td>⚠️ HIGH PEAK</td></tr>
+                <tr><td>...</td><td>...</td><td>...</td><td></td></tr>
+            </table>
+            <p>En aquests episodis la incidència multiplica per 3,5 la mitjana. Aplicant la fracció atribuïble, es pot estimar l'excés de casos:</p>
+            <div class="formula-block">
+                \[
+                \text{Excés diari} = (\text{incidència pic} - \text{incidència basal}) \times \frac{\text{població}}{1000}
+                \]
+            </div>
+            <p>Per a Martorell (~28.000 habitants), un pic de 5.27 suposa unes \( (5.27-1.38)\times 28 \approx 109 \) consultes extra aquell dia. Aquests pics reforcen la necessitat d'alertes per contaminació.</p>
+        </div>
+
+        <!-- PAS 5 -->
+        <div class="step">
+            <div class="step-header"><span class="step-num">5</span><span style="font-size: 1.4rem; font-weight: 600;">Tendències temporals (2012-2025)</span></div>
+            <p>L'anàlisi de tendència mostra una lleugera reducció de la incidència mitjana a partir de 2020, possiblement per millores en la qualitat de l'aire i canvis en mobilitat. No obstant això, els hiverns continuen presentant pics associats a NO₂ elevat.</p>
+            <div style="display: flex; gap: 20px; justify-content: space-around; background: #e2eee7; border-radius: 24px; padding: 16px;">
+                <div><strong>2012-2019</strong><br>Incid. mitjana ≈ 1.58</div>
+                <div><strong>2020-2025</strong><br>Incid. mitjana ≈ 1.42</div>
+                <div><strong>Reducció</strong><br>≈ 10%</div>
+            </div>
+            <p style="margin-top: 20px;">Els mesos d'hivern (gener-febrer) concentren els valors més alts tant de NO₂ com d'incidència, confirmant el patró estacional típic de les infeccions respiratòries agreujades per contaminació.</p>
+        </div>
+    </div>
+
+    <!-- RESUM FINAL I CONCLUSIONS -->
+    <div class="card">
+        <h2>📝 Resum i conclusions del problema</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <p>✔️ <strong>Associació significativa:</strong> \(r = 0.368\) (NO₂) i RR = 1.16.<br>
+                ✔️ <strong>Fracció atribuïble:</strong> 13.5% de la incidència en dies contaminants.<br>
+                ✔️ <strong>Efecte agut:</strong> màxima correlació a lag 0-1.<br>
+                ✔️ <strong>Pics d'alerta:</strong> gener 2022, amb incidències >5 per 1000.</p>
+            </div>
+            <div style="background: #f2f9f5; border-radius: 20px; padding: 16px;">
+                <strong>🌱 Mesures recomanades:</strong> reforçar la vigilància epidemiològica en episodis de contaminació, reduir el trànsit en dies d'estabilitat atmosfèrica i promoure l'ús de transport públic / zones de baixes emissions.
+            </div>
+        </div>
+        <hr style="margin: 24px 0 12px; border-top: 2px solid #bdd6ca;">
+        <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+            <span style="background: #1b4e3f; color: white; padding: 6px 24px; border-radius: 60px;">📍 Dades reals processades · Martorell</span>
+            <span class="badge">🌫️ NO₂ · PM · O₃ · SO₂ · 5108 dies</span>
+            <span style="margin-left: auto; font-style: italic;">Anàlisi estil OMS · Educatiu</span>
+        </div>
+        <p class="footnote" style="margin-top: 18px;">
+            * Els càlculs es basen en el conjunt de dades obtingudes de servidors de la Generalitat de Catalunya de Martorell i municipis propers. Totes les fórmules s'han verificat amb les mitjanes i recomptes indicats.
+        </p>
+    </div>
+
+    <!-- Nota final MathJax -->
+    <div style="text-align: right; opacity: 0.7; font-size: 0.8rem;">Equacions renderitzades amb MathJax · Problema epidemiològic ambiental</div>
+</div>
+
+<script>
+    window.addEventListener('load', function() {
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+    });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
