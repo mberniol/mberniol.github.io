@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌫️ Problema · Contaminació i infeccions respiratòries · Martorell</title>
+    <title>🌫️ Problema · Contaminació i infeccions respiratòries · Gavà</title>
     <!-- MathJax per renderitzar equacions -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
@@ -192,15 +192,15 @@
             <div>
                 <h1>🌫️ Com afecta la contaminació aèria a les incidències d'infeccions respiratòries diàries?</h1>
                 <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">
-                    <span class="badge">📍 Martorell · 2012 – 2025</span>
-                    <span class="badge">📊 5108 dies analitzats</span>
+                    <span class="badge">📍 Gavà · 2012 – 2025</span>
+                    <span class="badge">📊 5185 dies analitzats</span>
                     <span class="badge">🧪 Epidemiologia ambiental</span>
                 </div>
             </div>
-            <div class="city-highlight">🏭 Martorell · dades dels servidors XPVCA, Meteocat i SIVIC</div>
+            <div class="city-highlight">🏭 Gavà · dades dels servidors XPVCA, Meteocat i SIVIC</div>
         </div>
         <p style="margin-top: 20px; font-size: 1.1rem; background: #e6f0ea; padding: 12px 24px; border-radius: 50px;">
-            <strong>Problema clàssic:</strong> A partir del conjunt de dades diàries de qualitat de l'aire (NO₂, NOX, PM10, PM2.5, O₃, SO₂) i incidència d'infeccions respiratòries (per 1000 habitants) registrades a Martorell entre 2012 i 2025, es demana avaluar l'associació entre la contaminació i la salut respiratòria, calcular indicadors de risc i interpretar els pics detectats.
+            <strong>Problema clàssic:</strong> A partir del conjunt de dades diàries de qualitat de l'aire (NO₂, NOX, PM10, PM2.5, O₃, SO₂) i incidència d'infeccions respiratòries (per 1000 habitants) registrades a Gavà entre 2012 i 2025, es demana avaluar l'associació entre la contaminació i la salut respiratòria, calcular indicadors de risc i interpretar els pics detectats.
         </p>
     </div>
 
@@ -216,12 +216,13 @@
         </div>
         <h3>🌫️ Mitjanes de contaminants i superacions de límits OMS (diaris)</h3>
         <div class="pollutant-bar">
-            <span><strong>NO₂</strong> 30.4 µg/m³ <span class="exceed">253 dies > límit 25</span></span>
-            <span><strong>NOX</strong> 55.0 µg/m³ (sense límit OMS diari)</span>
-            <span><strong>O₃</strong> 40.0 µg/m³ <span class="exceed">0 > 100</span></span>
-            <span><strong>PM10</strong> 19.8 µg/m³ <span class="exceed">16 > 45</span></span>
-            <span><strong>PM2.5</strong> 10.8 µg/m³ <span class="exceed">11 > 15</span></span>
-            <span><strong>SO₂</strong> 2.6 µg/m³ <span class="exceed">0 > 40</span></span>
+            <span><strong>NO₂</strong> 13.2 µg/m³ <span class="exceed">282 dies > límit 25</span></span>
+            <span><strong>NOX</strong> 18.5 µg/m³ (sense límit OMS diari)</span>
+            <span><strong>O₃</strong> 57.4 µg/m³ <span class="exceed">44 dies > límit 100</span></span>
+            <span><strong>C6H6</strong> 0.7 µg/m³ <span class="exceed">0 dies > límit 5</span></span>
+            <span><strong>CO</strong> 0.3 µg/m³ <span class="exceed">0 dies > límit 4000</span></span>
+            <span><strong>SO₂</strong> 3.3 µg/m³ <span class="exceed">0 dies > límit 40</span></span>
+            <span><strong>NO</strong> 4.2 µg/m³ <span class="exceed">14 dies > límit 25</span></span>
         </div>
         <p class="footnote" style="margin-top: 0;">* Dies amb registre: NO₂ 5037, O₃ 756, PM10 2442, PM2.5 61, SO₂ 751.</p>
         
@@ -315,7 +316,7 @@
                 \text{Excés diari} = (\text{incidència pic} - \text{incidència basal}) \times \frac{\text{població}}{1000}
                 \]
             </div>
-            <p>Per a Martorell (~28.000 habitants), un pic de 5.27 suposa unes \( (5.27-1.38)\times 28 \approx 109 \) consultes extra aquell dia. Aquests pics reforcen la necessitat d'alertes per contaminació.</p>
+            <p>Per a Gavà (~28.000 habitants), un pic de 5.27 suposa unes \( (5.27-1.38)\times 28 \approx 109 \) consultes extra aquell dia. Aquests pics reforcen la necessitat d'alertes per contaminació.</p>
         </div>
 
         <!-- PAS 5 -->
@@ -347,12 +348,12 @@
         </div>
         <hr style="margin: 24px 0 12px; border-top: 2px solid #bdd6ca;">
         <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
-            <span style="background: #1b4e3f; color: white; padding: 6px 24px; border-radius: 60px;">📍 Dades reals processades · Martorell</span>
+            <span style="background: #1b4e3f; color: white; padding: 6px 24px; border-radius: 60px;">📍 Dades reals processades · Gavà</span>
             <span class="badge">🌫️ NO₂ · PM · O₃ · SO₂ · 5108 dies</span>
             <span style="margin-left: auto; font-style: italic;">Anàlisi estil OMS · Educatiu</span>
         </div>
         <p class="footnote" style="margin-top: 18px;">
-            * Els càlculs es basen en el conjunt de dades obtingudes de servidors de la Generalitat de Catalunya de Martorell i municipis propers. Totes les fórmules s'han verificat amb les mitjanes i recomptes indicats.
+            * Els càlculs es basen en el conjunt de dades obtingudes de servidors de la Generalitat de Catalunya de Gavà i municipis propers. Totes les fórmules s'han verificat amb les mitjanes i recomptes indicats.
         </p>
     </div>
 
