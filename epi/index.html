@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,7 +91,7 @@
             <p class="font-semibold text-sky-400 flex items-center gap-2">📁 Data requirements</p>
             <ul class="list-disc pl-5 space-y-1 mt-1 text-sm sm:text-base text-slate-300">
               <li><span class="font-mono text-emerald-400">date</span> (YYYY-MM-DD) and <span class="font-mono text-emerald-400">incidencia_1000</span> are mandatory.</li>
-              <li>Optional: <span class="font-mono">pm2.5</span>, <span class="font-mono">pm10</span>, <span class="font-mono">no2</span>, <span class="font-mono">nox</span>, <span class="font-mono">o3</span>, <span class="font-mono">so2</span>.</li>
+              <li>Optional: <span class="font-mono">pm2.5</span>, <span class="font-mono">pm10</span>, <span class="font-mono">no2</span>, <span class="font-mono">nox</span>,<span class="font-mono">no</span>, <span class="font-mono">o3</span>, <span class="font-mono">so2</span>.</li>
               <li>CSV format with header, commas or semicolons supported.</li>
             </ul>
           </div>
@@ -110,8 +109,8 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
             <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
               <p class="font-semibold text-emerald-400">📈 Correlation & p-values</p>
-              <p class="text-slate-300 text-xs mt-1">Pearson's r + significance. p < 0.05 indicates association.<br>
-              <span class="text-amber-400">⚠️ Asterisks (*) indicate statistical significance (p < 0.05 = *, p < 0.01 = **, p < 0.001 = ***). They do NOT measure the strength of association.</span></p>
+              <p class="text-slate-300 text-xs mt-1">Pearson's r + significance. p &lt; 0.05 indicates association.<br>
+              <span class="text-amber-400">⚠️ Asterisks (*) indicate statistical significance (p &lt; 0.05 = *, p &lt; 0.01 = **, p &lt; 0.001 = ***). They do NOT measure the strength of association.</span></p>
             </div>
             <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
               <p class="font-semibold text-amber-400">⚠️ Peak detection</p>
@@ -170,7 +169,7 @@
               <strong>Required columns:</strong>
               <span class="font-mono text-emerald-400">date</span>,
               <span class="font-mono text-emerald-400">incidencia_1000</span><br>
-              <strong>Optional:</strong> pm2.5, pm10, no2, nox, o3, so2
+              <strong>Optional:</strong> pm2.5, pm10, no2, nox, no, co, h2s, o3, so2, c6h6
             </div>
           </div>
           <div id="fileStatus" class="hidden mt-2 text-emerald-400 font-medium bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20 text-sm"></div>
@@ -263,7 +262,10 @@
             <h3 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">⚠️ Peak detection</h3>
             <div class="overflow-x-auto rounded-xl border border-slate-700">
               <table id="peaksTable" class="w-full text-xs sm:text-sm min-w-[500px]">
-                <thead class="sticky top-0 bg-slate-800"><tr class="text-slate-400 text-xs"><th class="px-3 sm:px-6 py-3 text-left">Date</th><th class="px-3 sm:px-6 py-3 text-left">Incidence</th><th class="px-3 sm:px-6 py-3 text-left">PM₂.₅</th><th class="px-3 sm:px-6 py-3 text-left">NO₂</th><th class="px-3 sm:px-6 py-3 text-left">O₃</th><th class="px-3 sm:px-6 py-3 text-left">Alert</th></tr></thead>
+                <thead class="sticky top-0 bg-slate-800">
+                  <tr class="text-slate-400 text-xs">
+                    </tr>
+                </thead>
                 <tbody class="divide-y divide-slate-700"></tbody>
               </table>
             </div>
@@ -314,7 +316,20 @@
     }
 
     function cleanLabel(name) {
-      return name.replace(/_/g, '.').replace(/pm2\.5|pm2_5/i, 'PM2.5').replace(/pm10/i, 'PM10').replace(/no2/i, 'NO₂').replace(/nox/i, 'NOx').replace(/o3/i, 'O₃').replace(/so2/i, 'SO₂').toUpperCase();
+      return String(name)
+        .toLowerCase()
+        .replace(/_/g, '.')
+        .replace(/pm2\.5|pm2_5/g, 'PM2.5')
+        .replace(/pm10/g, 'PM10')
+        .replace(/no2/g, 'NO₂')
+        .replace(/nox/g, 'NOx')
+        .replace(/\bno\b/g, 'NO')
+        .replace(/o3/g, 'O₃')
+        .replace(/so2/g, 'SO₂')
+        .replace(/co/g, 'CO')
+        .replace(/h2s/g, 'H₂S')
+        .replace(/c6h6/g, 'C₆H₆')
+        .toUpperCase();
     }
 
     function parseDate(dateStr) {
@@ -384,6 +399,10 @@
       out.nox = toNumber(out.nox);
       out.o3 = toNumber(out.o3);
       out.so2 = toNumber(out.so2);
+      out.co = toNumber(out.co);
+      out.h2s = toNumber(out.h2s);
+      out.no = toNumber(out.no);
+      out.c6h6 = toNumber(out.c6h6);
       out.date = out.date ? String(out.date).trim() : null;
       return out;
     }
@@ -448,7 +467,7 @@
     }
 
     function getWHOThreshold(key) {
-      const thresholds = { 'pm2_5': 15, 'pm10': 45, 'no2': 25, 'o3': 100, 'so2': 40 };
+      const thresholds = { 'pm2_5': 15, 'pm10': 45, 'no2': 25, 'o3': 100, 'so2': 40, 'co': 4000, 'h2s': 7,'no': 25, 'c6h6': 5};
       return thresholds[key] || null;
     }
 
@@ -532,10 +551,13 @@
         if (threshold !== null && totalValidDays > 0) exceedCount = values.filter(v => v > threshold).length;
         return mean !== null ? { label: p.label, value: mean, exceedCount, threshold, totalValidDays, hasThreshold: threshold !== null } : null;
       }).filter(Boolean);
+      
       const totalDaysEl = document.getElementById('totalDays');
       if (totalDaysEl) totalDaysEl.textContent = filteredData.length;
+      
       const avgIncEl = document.getElementById('avgIncidence');
       if (avgIncEl) avgIncEl.textContent = avgInc != null ? avgInc.toFixed(2) : '—';
+      
       const pollutantsContainer = document.getElementById('pollutantsGrid');
       if (pollutantsContainer) {
         if (pollutantStats.length) {
@@ -552,32 +574,116 @@
       return { incidences, avgInc };
     }
 
+    // --- FUNCIONS SMART PEAK TABLE ---
+    function getPeakColumns() {
+      const all = [
+        { key: 'pm2_5', label: 'PM₂.₅' },
+        { key: 'pm10', label: 'PM₁₀' },
+        { key: 'no2', label: 'NO₂' },
+        { key: 'nox', label: 'NOx' },
+        { key: 'no', label: 'NO' },
+        { key: 'o3', label: 'O₃' },
+        { key: 'so2', label: 'SO₂' },
+        { key: 'co', label: 'CO' },
+        { key: 'h2s', label: 'H₂S' },
+        { key: 'c6h6', label: 'C₆H₆' }
+      ];
+
+      return all.filter(c =>
+        filteredData.some(r => r[c.key] != null && Number.isFinite(r[c.key]))
+      );
+    }
+
+    function renderPeaksHeader(cols) {
+      const theadRow = document.querySelector('#peaksTable thead tr');
+      if (!theadRow) return;
+
+      theadRow.innerHTML = `
+        <th class="px-3 sm:px-6 py-3 text-left">Date</th>
+        <th class="px-3 sm:px-6 py-3 text-left">Incidence</th>
+        ${cols.map(c => `
+          <th class="px-3 sm:px-6 py-3 text-left">${c.label}</th>
+        `).join('')}
+        <th class="px-3 sm:px-6 py-3 text-left">Alert</th>
+      `;
+    }
+
+    function getPeaks() {
+      const vals = filteredData
+        .map(r => r.incidencia_1000)
+        .filter(v => v != null && Number.isFinite(v));
+
+      if (!vals.length) return [];
+
+      const mean = safeMean(vals);
+      const std = safeStd(vals);
+
+      if (!std || std === 0) return [];
+
+      const threshold = mean + 2 * std;
+
+      return filteredData
+        .filter(r =>
+          r.incidencia_1000 != null &&
+          r.incidencia_1000 > threshold
+        )
+        .sort((a, b) => b.incidencia_1000 - a.incidencia_1000)
+        .slice(0, 15);
+    }
+
     function renderPeaksTable() {
       const tbody = document.querySelector('#peaksTable tbody');
       const peakCountEl = document.getElementById('peakCount');
+
       if (!tbody || !peakCountEl) return;
+
       tbody.innerHTML = '';
-      const incidenceVals = filteredData.map(r => r.incidencia_1000).filter(v => v != null && Number.isFinite(v));
-      if (!incidenceVals.length) {
-        peakCountEl.textContent = '0';
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No incidence data available</td></tr>`;
-        return;
-      }
-      const mean = safeMean(incidenceVals), std = safeStd(incidenceVals) || 0;
-      const threshold = mean + 2 * std;
-      const peaks = filteredData.filter(row => row.incidencia_1000 != null && row.incidencia_1000 > threshold).sort((a,b)=>b.incidencia_1000 - a.incidencia_1000).slice(0,15);
+
+      const peaks = getPeaks();
+      const cols = getPeakColumns();
+
+      // Header dinàmic
+      renderPeaksHeader(cols);
+
       peakCountEl.textContent = peaks.length;
+
       if (!peaks.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No significant peaks detected</td></tr>`;
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="${2 + cols.length + 1}" class="text-center py-6 text-slate-400">
+              No significant peaks detected
+            </td>
+          </tr>
+        `;
         return;
       }
+
       peaks.forEach(row => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-800 transition-colors';
-        tr.innerHTML = `<td class="px-3 sm:px-6 py-3 font-mono">${row.date ?? '—'}</td><td class="px-3 sm:px-6 py-3 text-red-400 font-semibold">${row.incidencia_1000.toFixed(2)}</td><td class="px-3 sm:px-6 py-3">${row.pm2_5 != null ? row.pm2_5.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3">${row.no2 != null ? row.no2.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3">${row.o3 != null ? row.o3.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3"><span class="px-2 py-1 text-xs bg-red-500/20 text-red-400 rounded-full border border-red-500/20">HIGH PEAK</span></td>`;
+
+        const pollutantCells = cols.map(c => {
+          const v = row[c.key];
+          return `<td class="px-3 sm:px-6 py-3">${v != null ? v.toFixed(1) : '—'}</td>`;
+        }).join('');
+
+        tr.innerHTML = `
+          <td class="px-3 sm:px-6 py-3 font-mono">${row.date ?? '—'}</td>
+          <td class="px-3 sm:px-6 py-3 text-red-400 font-semibold">
+            ${row.incidencia_1000.toFixed(2)}
+          </td>
+          ${pollutantCells}
+          <td class="px-3 sm:px-6 py-3">
+            <span class="px-2 py-1 text-xs bg-red-500/20 text-red-400 rounded-full border border-red-500/20">
+              HIGH PEAK
+            </span>
+          </td>
+        `;
+
         tbody.appendChild(tr);
       });
     }
+    // ------------------------------------
 
     function formatPValue(p) {
       if (!Number.isFinite(p)) return '—';
@@ -848,12 +954,11 @@
     window.onload = () => {
       setupEventListeners();
       initModal();
-      console.log('✅ Application ready – robust error handling added');
+      console.log('✅ Application ready – robust error handling & smart peak table added');
     };
   </script>
 </body>
 </html>
-
 
 
 
