@@ -1,1 +1,945 @@
 
+
+
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DLNM Explorer – Scientific WebR Tool</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #7dd3fc;
+      --primary-700: #0284c7;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --warning: #ca8a04;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      padding: 3rem 0 2.25rem;
+      border-radius: 0 0 2rem 2rem;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero .lead { color: #cbd5e1; }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04);
+      margin-bottom: 1.25rem;
+      background: var(--surface);
+    }
+
+    .card-header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-body { padding: 1.25rem; }
+
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      border-radius: 0.9rem;
+      font-weight: 700;
+      padding: 0.8rem 1.4rem;
+      box-shadow: 0 8px 18px rgba(14, 165, 233, 0.24);
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-700); }
+    .btn-primary:disabled { background: #94a3b8; box-shadow: none; }
+
+    .form-select, .form-control {
+      border-radius: 0.9rem;
+      border: 1px solid #cbd5e1;
+      padding: 0.75rem 1rem;
+    }
+    .form-select:focus, .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 .2rem rgba(14,165,233,.18);
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+
+    .muted { color: var(--muted); }
+
+    .multiselect-box {
+      border: 1px solid var(--border);
+      border-radius: 0.9rem;
+      background: var(--surface-2);
+      padding: .25rem;
+      min-height: 175px;
+    }
+    .multiselect-box select {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      min-height: 165px;
+    }
+
+    #errorProtocol,
+    #errorBox,
+    #warningBox,
+    #dataInfoBox {
+      display: none;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    #errorProtocol { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    #errorBox { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    #warningBox { background: #fffbeb; color: #854d0e; border: 1px solid #fde68a; }
+    #dataInfoBox { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+
+    .nav-tabs { border-bottom: 2px solid var(--border); }
+    .nav-tabs .nav-link {
+      border: none;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 1rem 1.2rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+    }
+    .nav-tabs .nav-link:hover { color: var(--text); }
+    .nav-tabs .nav-link.active {
+      color: var(--primary);
+      background: transparent;
+      border-bottom-color: var(--primary);
+    }
+
+    .plot-shell {
+      background: var(--surface-2);
+      border-radius: 1rem;
+      border: 1px dashed #cbd5e1;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .plot-shell img {
+      max-width: 100%;
+      border-radius: 0.8rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 1rem;
+      padding: 1rem;
+      overflow: auto;
+      max-height: 520px;
+      white-space: pre-wrap;
+      margin: 0;
+      font-size: .86rem;
+    }
+
+    .small-note { font-size: .9rem; color: var(--muted); }
+    .spinner-border { width: 1.1rem; height: 1.1rem; border-width: 0.18em; }
+    .code-inline {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      border-radius: .5rem;
+      padding: .08rem .4rem;
+      font-size: .85em;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero text-center">
+    <div class="container">
+      <h1 class="display-5 fw-bold mb-3"><i class="fa-solid fa-chart-line text-info me-2"></i>DLNM Explorer</h1>
+      <p class="lead mb-4">Scientific WebR Interface for Distributed Lag Non-linear Models</p>
+      <button class="btn btn-outline-info btn-sm rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#howItWorksModal">
+        <i class="fa-solid fa-book-open me-2"></i>Methodology & Documentation
+      </button>
+    </div>
+  </header>
+
+  <main class="container pb-5">
+    <div id="errorProtocol" class="fw-semibold text-center">
+      <i class="fa-solid fa-triangle-exclamation fs-4 d-block mb-2"></i>
+      Has obert el fitxer amb <span class="code-inline">file://</span>. WebR necessita un servidor local (per exemple, Live Server).
+    </div>
+
+<section class="card">
+  <div class="card-header"><i class="fa-solid fa-file-csv text-primary me-2"></i>1. Upload Dataset (.csv)</div>
+  <div class="card-body">
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Exemples (City1 / City2)</label>
+        <select id="demoDataset" class="form-select form-select-lg">
+          <option value="">-- Puja un arxiu propi --</option>
+          <option value="dades1.csv">City 1 (dades1.csv)</option>
+          <option value="dades2.csv">City 2 (dades2.csv)</option>
+        </select>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label fw-semibold">O puja el teu fitxer CSV</label>
+        <input type="file" id="csvFile" class="form-control form-control-lg" accept=".csv,text/csv" />
+      </div>
+      <div class="col-md-3 d-flex align-items-end">
+        <div id="fileStatus" class="w-100 d-flex align-items-center fw-semibold bg-primary bg-opacity-10 text-primary rounded-3 p-2">
+          <span class="spinner-border spinner-border-sm me-2"></span>
+          Initializing WebR...
+        </div>
+      </div>
+    </div>
+    <div id="colInfo" class="mt-3 small-note"></div>
+  </div>
+</section>
+
+    <section class="card">
+      <div class="card-header"><i class="fa-solid fa-sliders me-2"></i>2. Model Specification</div>
+      <div class="card-body">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Outcome Variable (Y)</label>
+            <select id="outcomeVar" class="form-select bg-light" disabled>
+              <option>-- Upload data first --</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Exposure Variable (X)</label>
+            <select id="exposureVar" class="form-select bg-light" disabled>
+              <option>-- Upload data first --</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Maximum Lag Window</label>
+            <select id="maxLag" class="form-select">
+              <option value="7">7 days</option>
+              <option value="14" selected>14 days (Standard)</option>
+              <option value="21">21 days</option>
+              <option value="28">28 days</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Confounding Variables</label>
+            <div class="multiselect-box">
+              <select id="confounders" class="form-select" multiple size="8" disabled></select>
+            </div>
+            <div class="small-note mt-1">Tria només confusors reals. El model netja automàticament variables constants i el mateix <code>Y</code>/<code>X</code>.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Advanced Controls</label>
+            <div class="panel">
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="includeTime" checked>
+                <label class="form-check-label fw-medium" for="includeTime">Include temporal control (natural splines)</label>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="antiOverfit" checked>
+                <label class="form-check-label fw-medium" for="antiOverfit">Anti-overfitting mode (df=2 lag space)</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="autoCleanConfounders" checked>
+                <label class="form-check-label fw-medium" for="autoCleanConfounders">Auto-clean confounders (remove constants and duplicates)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 my-4 p-4 bg-white rounded-4 shadow-sm border">
+      <button id="runBtn" class="btn btn-primary btn-lg px-5" disabled>
+        <i class="fa-solid fa-play-circle me-2"></i>Compute DLNM
+      </button>
+      <div id="loadingMsg" class="text-primary fw-semibold d-none">
+        <div class="d-flex align-items-center">
+          <span class="spinner-border me-3"></span>
+          <span>Calculating the model...</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="errorBox" class="shadow-sm">
+      <h5 class="fw-bold mb-2"><i class="fa-solid fa-circle-xmark me-2"></i>Execution Error</h5>
+      <div id="errorMsgText"></div>
+    </div>
+
+    <div id="warningBox" class="shadow-sm">
+      <i class="fa-solid fa-triangle-exclamation me-2"></i><strong>Model Adjustment:</strong>
+      <span id="warningText"></span>
+    </div>
+
+    <section id="resultsSection" class="card shadow-sm" style="opacity:.65; transition: opacity .25s ease;">
+      <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+        <h4 class="mb-3"><i class="fa-solid fa-chart-column text-primary me-2"></i>3. Epidemiological Results</h4>
+        <ul class="nav nav-tabs" id="resultTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#plot3dPanel" type="button" role="tab">3D Surface</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#plotPanel" type="button" role="tab">Cumulative Effect</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#lagPanel" type="button" role="tab">Extremes Lag</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Statistics</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card-body bg-white rounded-bottom-4 pt-4">
+        <div id="dataInfoBox" class="mb-3">
+          <h6 class="fw-bold mb-2"><i class="fa-solid fa-circle-info me-1"></i>Execution Summary:</h6>
+          <div id="dataInfoText"></div>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="plot3dPanel" role="tabpanel">
+            <div class="plot-shell">
+              <img id="plot3dImg" alt="3D plot" style="display:none;">
+              <p class="muted mt-3 mb-0 fw-medium" id="plot3dCaption">
+                <i class="fa-solid fa-cube fa-3x text-secondary d-block mb-3"></i>
+                The 3D response surface will appear here.
+              </p>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="plotPanel" role="tabpanel">
+            <div class="plot-shell">
+              <img id="lagPlotImg" alt="Cumulative effect plot" style="display:none;">
+              <p class="muted mt-3 mb-0 fw-medium" id="plotCaption">No plot generated yet.</p>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="lagPanel" role="tabpanel">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="plot-shell h-100">
+                  <h6 class="text-primary fw-bold mb-3"><i class="fa-solid fa-snowflake me-1"></i>Cold Extreme Curve</h6>
+                  <img id="plotColdImg" alt="Cold extreme lag plot" style="display:none;">
+                  <p class="muted small mt-3 mb-0" id="coldCaption"></p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="plot-shell h-100">
+                  <h6 class="text-danger fw-bold mb-3"><i class="fa-solid fa-fire me-1"></i>Heat Extreme Curve</h6>
+                  <img id="plotHeatImg" alt="Heat extreme lag plot" style="display:none;">
+                  <p class="muted small mt-3 mb-0" id="heatCaption"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="summary" role="tabpanel">
+            <pre id="modelSummary">⏳ Waiting for model execution...</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal fade" id="howItWorksModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header text-white" style="background:#0f172a;">
+          <h5 class="modal-title"><i class="fa-solid fa-microscope text-info me-2"></i>Scientific Methodology (DLNM)</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <h6 class="fw-bold text-primary">What is a Distributed Lag Non-linear Model (DLNM)?</h6>
+          <p>DLNM is a statistical framework used to study delayed and non-linear effects of an exposure on a health outcome.</p>
+          <h6 class="fw-bold text-primary mt-4">What this tool does</h6>
+          <ul class="lh-lg mb-0">
+            <li>Detects a reasonable family based on the outcome type.</li>
+            <li>Removes constant / invalid confounders automatically.</li>
+            <li>Generates a 3D response surface plus cumulative and lag-specific plots.</li>
+            <li>Uses a conservative lag spline by default to reduce overfitting.</li>
+          </ul>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module">
+    if (window.location.protocol === 'file:') {
+      document.getElementById('errorProtocol').style.display = 'block';
+      throw new Error('Open the project through a local server, not by double-clicking the HTML file.');
+    }
+
+    import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs';
+
+
+   
+    const els = {
+      demoDataset: document.getElementById('demoDataset'), // <-- Nova línia
+      fileInput: document.getElementById('csvFile'),
+      outcome: document.getElementById('outcomeVar'),
+      exposure: document.getElementById('exposureVar'),
+      confounders: document.getElementById('confounders'),
+      maxLag: document.getElementById('maxLag'),
+      includeTime: document.getElementById('includeTime'),
+      antiOverfit: document.getElementById('antiOverfit'),
+      autoClean: document.getElementById('autoCleanConfounders'),
+      runBtn: document.getElementById('runBtn'),
+      loadingMsg: document.getElementById('loadingMsg'),
+      errorBox: document.getElementById('errorBox'),
+      errorMsgText: document.getElementById('errorMsgText'),
+      warningBox: document.getElementById('warningBox'),
+      warningText: document.getElementById('warningText'),
+      dataInfoBox: document.getElementById('dataInfoBox'),
+      dataInfoText: document.getElementById('dataInfoText'),
+      modelSummary: document.getElementById('modelSummary'),
+      resultsSection: document.getElementById('resultsSection'),
+      fileStatus: document.getElementById('fileStatus'),
+      colInfo: document.getElementById('colInfo'),
+      plot3dImg: document.getElementById('plot3dImg'),
+      lagPlotImg: document.getElementById('lagPlotImg'),
+      plotColdImg: document.getElementById('plotColdImg'),
+      plotHeatImg: document.getElementById('plotHeatImg'),
+      plot3dCaption: document.getElementById('plot3dCaption'),
+      plotCaption: document.getElementById('plotCaption'),
+      coldCaption: document.getElementById('coldCaption'),
+      heatCaption: document.getElementById('heatCaption')
+    };
+
+    let webR = null;
+    let ready = false;
+    let lastData = { cols: [], rows: 0 };
+
+    function showError(message) {
+      els.errorMsgText.innerHTML = message;
+      els.errorBox.style.display = 'block';
+      els.loadingMsg.classList.add('d-none');
+      els.runBtn.disabled = false;
+      els.resultsSection.style.opacity = '0.65';
+    }
+
+    function hideMessages() {
+      els.errorBox.style.display = 'none';
+      els.warningBox.style.display = 'none';
+      els.dataInfoBox.style.display = 'none';
+      els.errorMsgText.innerHTML = '';
+      els.warningText.innerHTML = '';
+    }
+
+    function setStatus(kind, html) {
+      els.fileStatus.className = 'd-flex align-items-center fw-semibold rounded-3 p-2';
+      const base = kind === 'success'
+        ? 'bg-success bg-opacity-10 text-success'
+        : kind === 'danger'
+          ? 'bg-danger bg-opacity-10 text-danger'
+          : 'bg-primary bg-opacity-10 text-primary';
+      els.fileStatus.classList.add(...base.split(' '));
+      els.fileStatus.innerHTML = html;
+    }
+
+    function bytesToBase64(uint8) {
+      const chunkSize = 0x8000;
+      let binary = '';
+      for (let i = 0; i < uint8.length; i += chunkSize) {
+        binary += String.fromCharCode(...uint8.subarray(i, i + chunkSize));
+      }
+      return btoa(binary);
+    }
+
+    function fillSelect(selectEl, cols, keep = []) {
+      const current = selectEl.value;
+      selectEl.innerHTML = '';
+      for (const col of cols) {
+        const opt = new Option(col, col);
+        if (keep.includes(col)) opt.selected = true;
+        selectEl.add(opt);
+      }
+      if (current && cols.includes(current)) selectEl.value = current;
+    }
+
+    function guessDefaults(cols) {
+      const lower = new Map(cols.map(c => [c.toLowerCase(), c]));
+      const outcomeCandidates = ['casos_total', 'cases_total', 'incidencia_1000', 'incidence_1000'];
+      const exposureCandidates = ['no2', 'pm10', 'pm25', 'o3', 'temp_mean', 'temperature', 'rh', 'humidity'];
+
+      let outcome = outcomeCandidates.map(c => lower.get(c)).find(Boolean) || cols[0] || '';
+      let exposure = exposureCandidates.map(c => lower.get(c)).find(Boolean) || cols[1] || '';
+      if (outcome === exposure && cols.length > 1) exposure = cols.find(c => c !== outcome) || exposure;
+      return { outcome, exposure };
+    }
+
+    function filterConfounders(cols, outcome, exposure) {
+      return cols.filter(c => c !== outcome && c !== exposure && c !== 'date' && c !== 'time');
+    }
+
+    async function initWebR() {
+      try {
+        webR = new WebR();
+        await webR.init();
+        await webR.evalR(`
+          suppressPackageStartupMessages({
+            if (!requireNamespace('dlnm', quietly = TRUE)) {
+              webr::install('dlnm')
+            }
+            library(dlnm)
+            library(splines)
+          })
+        `);
+        ready = true;
+        setStatus('success', '<i class="fa-solid fa-circle-check me-2"></i>WebR Engine Ready');
+      } catch (err) {
+        setStatus('danger', '<i class="fa-solid fa-circle-xmark me-2"></i>Initialization Failed');
+        showError('Could not start R in the browser: ' + err.message);
+      }
+    }
+
+    function selectedConfounders() {
+      return Array.from(els.confounders.selectedOptions).map(opt => opt.value);
+    }
+
+    function buildRCode({ outcome, exposure, maxLag, confounders, includeTime, antiOverfit }) {
+      const confVec = confounders.length ? `c(${confounders.map(v => JSON.stringify(v)).join(', ')})` : 'character(0)';
+      const timeDfExpr = includeTime ? 'res_df_time <- max(4, min(30, round(nrow(df_clean) / 365 * 4)))' : 'res_df_time <- 0';
+      const lagDf = antiOverfit ? 2 : 3;
+      const expDf = 3;
+
+      return `
+        suppressPackageStartupMessages({
+          library(dlnm)
+          library(splines)
+        })
+
+        res_success <- FALSE
+        res_error <- ''
+        res_summary <- ''
+        res_fam <- ''
+        res_nobs <- 0
+        res_total <- nrow(df)
+        res_ncol <- ncol(df)
+        res_df_time <- 0
+        res_retries <- 0
+        removed_conf <- 0
+        removed_list <- ''
+        val_cold <- NA_real_
+        val_heat <- NA_real_
+        n_obs_cold <- 0
+        n_obs_heat <- 0
+        max_rr <- NA_real_
+
+        tryCatch({
+          df_clean <- df
+          if (!'time' %in% names(df_clean)) df_clean$time <- seq_len(nrow(df_clean))
+
+          y <- df_clean[[${JSON.stringify(outcome)}]]
+          x <- df_clean[[${JSON.stringify(exposure)}]]
+
+          if (all(is.na(y))) stop('Outcome is completely empty (all NA).')
+          if (all(is.na(x))) stop('Exposure is completely empty (all NA).')
+
+          # Keep only relevant variables and remove bad confounders.
+          conf_list <- ${confVec}
+          good_conf <- character(0)
+          if (length(conf_list) > 0) {
+            for (v in conf_list) {
+              if (!v %in% names(df_clean)) next
+              vv <- df_clean[[v]]
+              if (v %in% c(${JSON.stringify(outcome)}, ${JSON.stringify(exposure)}, 'date', 'time')) next
+              if (all(is.na(vv))) next
+              if (length(unique(na.omit(vv))) <= 1) next
+              if (is.factor(vv)) df_clean[[v]] <- as.numeric(vv)
+              good_conf <- c(good_conf, v)
+            }
+          }
+          removed_conf <- length(conf_list) - length(good_conf)
+          if (removed_conf > 0) removed_list <- paste(setdiff(conf_list, good_conf), collapse = ', ')
+
+          # Build analysis dataset.
+          keep_vars <- unique(c(${JSON.stringify(outcome)}, ${JSON.stringify(exposure)}, good_conf, 'time'))
+          df_model <- df_clean[, keep_vars, drop = FALSE]
+
+          # Drop rows with missing values in analysis variables only.
+          complete_idx <- complete.cases(df_model)
+          df_model <- df_model[complete_idx, , drop = FALSE]
+          if (nrow(df_model) < 50) stop('Too few complete observations after cleaning.')
+
+          y2 <- df_model[[${JSON.stringify(outcome)}]]
+          x2 <- df_model[[${JSON.stringify(exposure)}]]
+
+          # Decide family from outcome.
+          is_count <- all(y2 >= 0, na.rm = TRUE) && all(abs(y2 - round(y2)) < 1e-8, na.rm = TRUE)
+          res_fam <- if (is_count) 'quasipoisson' else 'gaussian'
+          fam_obj <- if (is_count) quasipoisson() else gaussian()
+
+          cb <- crossbasis(
+            x2,
+            lag = ${maxLag},
+            argvar = list(fun = 'ns', df = ${expDf}),
+            arglag = list(fun = 'ns', df = ${lagDf})
+          )
+
+          ${timeDfExpr}
+
+          rhs <- c('cb', if (length(good_conf) > 0) good_conf else character(0), if (${includeTime ? 'TRUE' : 'FALSE'}) paste0('ns(time, df=', res_df_time, ')') else character(0))
+          fml <- as.formula(paste('${outcome} ~', paste(rhs, collapse = ' + ')))
+
+          model <- glm(fml, data = df_model, family = fam_obj, na.action = na.exclude)
+          res_nobs <- nobs(model)
+          if (res_nobs < 50) stop('Too many rows removed during model fitting.')
+
+          cen_val <- median(x2, na.rm = TRUE)
+          if (!is.finite(cen_val)) cen_val <- mean(x2, na.rm = TRUE)
+          pred <- crosspred(cb, model, cen = cen_val, by = 0.1)
+
+          q_cold <- as.numeric(quantile(x2, 0.01, na.rm = TRUE, names = FALSE))
+          q_heat <- as.numeric(quantile(x2, 0.99, na.rm = TRUE, names = FALSE))
+          val_cold <- pred$predvar[which.min(abs(pred$predvar - q_cold))]
+          val_heat <- pred$predvar[which.min(abs(pred$predvar - q_heat))]
+          n_obs_cold <- sum(x2 <= val_cold, na.rm = TRUE)
+          n_obs_heat <- sum(x2 >= val_heat, na.rm = TRUE)
+          max_rr <- suppressWarnings(max(pred$allRRfit, na.rm = TRUE))
+
+          png('plot_3d.png', width = 960, height = 700, res = 110)
+          par(mar = c(2.5, 2.5, 2.5, 2))
+          plot(pred, '3d', xlab = '${exposure}', ylab = 'Lag (days)', zlab = 'Relative Risk',
+               main = '3D Response Surface', col = '#7dd3fc', theta = 230, phi = 30, ltheta = 120)
+          dev.off()
+
+          png('plot_overall.png', width = 860, height = 520, res = 110)
+          plot(pred, 'overall', xlab = '${exposure}', ylab = 'Relative Risk (RR)',
+               main = 'Overall Cumulative Effect', lwd = 3)
+          abline(h = 1, lty = 2, col = 'gray50')
+          dev.off()
+
+          png('plot_cold.png', width = 700, height = 480, res = 110)
+          plot(pred, 'slices', var = val_cold,
+               main = paste0('Lag Response: Extreme Cold (', round(val_cold, 2), ')'),
+               ylab = 'Relative Risk', xlab = 'Lag (days)', lwd = 3)
+          abline(h = 1, lty = 2, col = 'gray50')
+          dev.off()
+
+          png('plot_heat.png', width = 700, height = 480, res = 110)
+          plot(pred, 'slices', var = val_heat,
+               main = paste0('Lag Response: Extreme Heat (', round(val_heat, 2), ')'),
+               ylab = 'Relative Risk', xlab = 'Lag (days)', lwd = 3)
+          abline(h = 1, lty = 2, col = 'gray50')
+          dev.off()
+
+          res_summary <- paste(capture.output(summary(model)), collapse = '\n')
+          res_success <- TRUE
+        }, error = function(e) {
+          res_error <<- e$message
+        })
+      `;
+    }
+
+ async function bufferToDf(buf) {
+  await webR.FS.writeFile('data.csv', new Uint8Array(buf));
+  await webR.evalR(`
+    df <- read.csv('data.csv', stringsAsFactors = FALSE, na.strings = c('NA','na','',' ','null','NULL'))
+    names(df) <- make.names(names(df), unique = TRUE)
+    for (nm in names(df)) {
+      if (nm == 'date') next
+      if (is.character(df[[nm]])) {
+        suppressWarnings({ num <- as.numeric(df[[nm]]) })
+        if (sum(!is.na(num)) > sum(!is.na(df[[nm]])) * 0.7) df[[nm]] <- num
+      }
+    }
+    if ('date' %in% names(df)) {
+      df$date <- as.Date(df$date, tryFormats = c('%Y-%m-%d', '%d/%m/%Y', '%m/%d/%Y'))
+    }
+    df$time <- seq_len(nrow(df))
+  `);
+}
+
+
+
+async function processLoadedData() {
+  const cols = await getRValue('names(df)', 'array');
+  const rows = await getRValue('nrow(df)', 'number');
+  if (!rows) throw new Error('El CSV està buit o no s\'ha pogut llegir.');
+
+  lastData = { cols, rows };
+  const defaults = guessDefaults(cols);
+
+  fillSelect(els.outcome, cols);
+  fillSelect(els.exposure, cols);
+  els.outcome.value = defaults.outcome;
+  els.exposure.value = defaults.exposure;
+
+  updateConfoundersFromSelection();
+  enableForm();
+
+  els.colInfo.innerHTML = `✅ Dataset carregat: <strong>${rows} files</strong> i <strong>${cols.length} variables</strong>.`;
+  setStatus('success', '<i class="fa-solid fa-circle-check me-2"></i>Dades Processades');
+}
+
+
+
+
+    async function getRValue(expr, type = 'string') {
+      const obj = await webR.evalR(expr);
+      if (type === 'boolean') return await obj.toBoolean();
+      if (type === 'number') return await obj.toNumber();
+      if (type === 'array') return await obj.toArray();
+      return await obj.toString();
+    }
+
+    async function loadPlot(path, imgEl) {
+      const bytes = await webR.FS.readFile(path);
+      imgEl.src = `data:image/png;base64,${bytesToBase64(bytes)}`;
+      imgEl.style.display = 'block';
+    }
+
+    function resetPlots() {
+      for (const el of [els.plot3dImg, els.lagPlotImg, els.plotColdImg, els.plotHeatImg]) {
+        el.removeAttribute('src');
+        el.style.display = 'none';
+      }
+      els.plot3dCaption.innerHTML = '<i class="fa-solid fa-cube fa-3x text-secondary d-block mb-3"></i>The 3D response surface will appear here.';
+      els.plotCaption.textContent = 'No plot generated yet.';
+      els.coldCaption.textContent = '';
+      els.heatCaption.textContent = '';
+    }
+
+    function enableForm() {
+      els.outcome.disabled = false;
+      els.exposure.disabled = false;
+      els.confounders.disabled = false;
+      els.runBtn.disabled = false;
+      els.outcome.classList.remove('bg-light');
+      els.exposure.classList.remove('bg-light');
+      els.confounders.classList.remove('bg-light');
+    }
+
+    function updateConfoundersFromSelection() {
+  const outcome = els.outcome.value;
+  const exposure = els.exposure.value;
+  const cols = lastData.cols;
+
+  const allowed = filterConfounders(cols, outcome, exposure);
+
+  // detectem noms possibles (robust)
+  const lowerMap = new Map(cols.map(c => [c.toLowerCase(), c]));
+
+  const defaultTemp =
+    lowerMap.get('temp_mean') ||
+    lowerMap.get('temperature') ||
+    lowerMap.get('temp');
+
+  const defaultRH =
+    lowerMap.get('rh') ||
+    lowerMap.get('humidity');
+
+  els.confounders.innerHTML = '';
+
+  for (const c of allowed) {
+    const isDefault = (c === defaultTemp || c === defaultRH);
+    const opt = new Option(c, c, false, isDefault);
+    els.confounders.add(opt);
+  }
+}
+
+    initWebR();
+
+els.fileInput.addEventListener('change', async (e) => {
+  hideMessages();
+  els.demoDataset.value = ""; // Reiniciem el dropdown d'exemples
+  const file = e.target.files?.[0];
+  if (!file || !ready) return;
+
+  try {
+    setStatus('info', '<span class="spinner-border spinner-border-sm me-2"></span>Llegint dades...');
+    const buf = await file.arrayBuffer();
+    await bufferToDf(buf);
+    await processLoadedData();
+  } catch (err) {
+    setStatus('danger', '<i class="fa-solid fa-circle-xmark me-2"></i>Error de lectura');
+    showError('Error llegint CSV: ' + err.message);
+  }
+});
+els.demoDataset.addEventListener('change', async (e) => {
+  const filename = e.target.value;
+  if (!filename) return; // Ha tornat a posar "Puja el teu arxiu"
+
+  hideMessages();
+  els.fileInput.value = ""; // Netejem l'input file
+  if (!ready) return;
+
+  try {
+    setStatus('info', '<span class="spinner-border spinner-border-sm me-2"></span>Descarregant dataset...');
+    
+    // Obtenim l'arxiu via xarxa
+    const response = await fetch(filename);
+    if (!response.ok) throw new Error(`No s'ha pogut trobar l'arxiu ${filename} al servidor.`);
+    const buf = await response.arrayBuffer();
+
+    setStatus('info', '<span class="spinner-border spinner-border-sm me-2"></span>Processant dades...');
+    await bufferToDf(buf);
+    await processLoadedData();
+
+  } catch (err) {
+    setStatus('danger', '<i class="fa-solid fa-circle-xmark me-2"></i>Error de descàrrega');
+    showError('Error carregant dataset d\'exemple: ' + err.message);
+  }
+});
+
+    els.outcome.addEventListener('change', () => updateConfoundersFromSelection());
+    els.exposure.addEventListener('change', () => updateConfoundersFromSelection());
+
+    els.runBtn.addEventListener('click', async () => {
+      hideMessages();
+      resetPlots();
+
+      const outcome = els.outcome.value;
+      const exposure = els.exposure.value;
+      const maxLag = Number(els.maxLag.value);
+      const confounders = selectedConfounders().filter(v => v !== outcome && v !== exposure);
+      const includeTime = els.includeTime.checked;
+      const antiOverfit = els.antiOverfit.checked;
+
+      if (!outcome || !exposure) {
+        showError('Please select both Outcome and Exposure variables.');
+        return;
+      }
+      if (outcome === exposure) {
+        showError('Outcome and Exposure cannot be the same variable.');
+        return;
+      }
+
+      els.loadingMsg.classList.remove('d-none');
+      els.runBtn.disabled = true;
+      els.runBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Running...';
+      els.resultsSection.style.opacity = '0.65';
+      els.modelSummary.textContent = 'Processing model...';
+
+      try {
+        const code = buildRCode({ outcome, exposure, maxLag, confounders, includeTime, antiOverfit });
+        await webR.evalR(code);
+
+        const success = await getRValue('res_success', 'boolean');
+        if (!success) {
+          const msg = await getRValue('res_error', 'string');
+          throw new Error(msg || 'Unknown model error');
+        }
+
+        const validRows = await getRValue('res_nobs', 'number');
+        const totalRows = await getRValue('res_total', 'number');
+        const totalCols = await getRValue('res_ncol', 'number');
+        const dfTime = await getRValue('res_df_time', 'number');
+        const retries = await getRValue('res_retries', 'number');
+        const famTxt = await getRValue('res_fam', 'string');
+        const vCold = await getRValue('val_cold', 'number');
+        const vHeat = await getRValue('val_heat', 'number');
+        const nCold = await getRValue('n_obs_cold', 'number');
+        const nHeat = await getRValue('n_obs_heat', 'number');
+        const maxRR = await getRValue('max_rr', 'number');
+        const removed = await getRValue('removed_conf', 'number');
+        const removedNames = await getRValue('removed_list', 'string');
+        const summary = await getRValue('res_summary', 'string');
+
+        if (removed > 0) {
+          els.warningText.innerHTML = `Automatically removed <b>${removed}</b> confounder(s): <code>${removedNames}</code>`;
+          els.warningBox.style.display = 'block';
+        }
+
+        els.dataInfoText.innerHTML = `
+          <ul class="mb-0 lh-lg">
+            <li><strong>Dataset used:</strong> <b>${validRows}</b> complete observations from <b>${totalRows}</b> total rows.</li>
+            <li><strong>Variables:</strong> <b>${totalCols}</b> columns available.</li>
+            <li><strong>Family:</strong> <b>${famTxt.toUpperCase()}</b>.</li>
+            <li><strong>Configuration:</strong> ${includeTime ? `<b>Temporal control:</b> ${dfTime} df${retries > 0 ? ` <span class="badge bg-warning text-dark ms-2">Auto-reduced ${retries} times</span>` : ''}` : '<span class="badge bg-secondary">No temporal control</span>'} | <b>Lag df:</b> ${antiOverfit ? 2 : 3} | <b>Max lag:</b> ${maxLag} days.</li>
+          </ul>`;
+        els.dataInfoBox.style.display = 'block';
+
+        await loadPlot('plot_3d.png', els.plot3dImg);
+        await loadPlot('plot_overall.png', els.lagPlotImg);
+        await loadPlot('plot_cold.png', els.plotColdImg);
+        await loadPlot('plot_heat.png', els.plotHeatImg);
+
+        els.plot3dCaption.innerHTML = `3D response surface for <b>${exposure}</b> over <b>${maxLag}</b> lag days.`;
+        els.plotCaption.innerHTML = `Overall cumulative effect of <b>${exposure}</b> on <b>${outcome}</b>.`;
+        els.coldCaption.innerHTML = `Extreme cold slice: <b>${Number.isFinite(vCold) ? vCold.toFixed(2) : 'NA'}</b> | observations: <b>${nCold}</b>.`;
+        els.heatCaption.innerHTML = `Extreme heat slice: <b>${Number.isFinite(vHeat) ? vHeat.toFixed(2) : 'NA'}</b> | observations: <b>${nHeat}</b>.`;
+        els.modelSummary.textContent = `General Linear Model (${famTxt})\nTime degrees of freedom: ${dfTime}\nAnti-overfitting mode: df=${antiOverfit ? 2 : 3}\nMax RR (estimated): ${Number.isFinite(maxRR) ? maxRR.toFixed(2) : 'NA'}\n\n${summary}`;
+
+        els.resultsSection.style.opacity = '1';
+      } catch (err) {
+        showError(`<b>WebR Engine Error:</b><br><code>${err.message}</code>`);
+      } finally {
+        els.loadingMsg.classList.add('d-none');
+        els.runBtn.disabled = false;
+        els.runBtn.innerHTML = '<i class="fa-solid fa-play-circle me-2"></i>Compute DLNM';
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
