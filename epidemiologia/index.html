@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -254,50 +252,58 @@ body[data-bs-theme="dark"] .navbar-toggler-icon {
     }
     </style>
 </head>
-<body>
-<nav id="mainNavbar" class="navbar navbar-expand-lg shadow" style="border-radius:16px; margin:10px; padding:8px 16px;">
-  <div class="container-fluid">
-    <!-- Logo y texto -->
-    <a class="navbar-brand d-flex align-items-center" href="https://mberniol.github.io">
-      <img src="https://izeddi.github.io/logo.png" alt="Logo" class="logo rounded-circle me-2">
-      <span class="fw-bold">Web de Marc</span>
-    </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<body data-bs-theme="light">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top">
+    <div class="container-fluid">
+      <!-- 5. Logo i text -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="https://mberniol.github.io/logo.png" width="50" height="50" alt="Logo" class="logo rounded-circle me-2">
+        <span class="fw-bold">Web de Marc</span>
+      </a>
+      <!-- Botó menú mòbil -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+      <!-- Menú -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- Projecte 1 -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="proj1Dropdown" role="button" data-bs-toggle="dropdown">
-              <i class="fa-solid fa-diagram-project me-1"></i> Cerca IA vs Google Academic
+            <a class="nav-link dropdown-toggle" href="#" id="proj1Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-magnifying-glass"></i> Cerca IA vs Google Acadèmic
             </a>
             <ul class="dropdown-menu" aria-labelledby="proj1Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/cerca"><i class="fa-solid fa-seedling me-1"></i>Recerca Carabassó</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/cerca"><i class="fa-solid fa-carrot"></i> Recerca Carbasó</a></li>
             </ul>
           </li>
+          <!-- Projecte 2 -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="proj2Dropdown" role="button" data-bs-toggle="dropdown">
-              <i class="fa-solid fa-folder-open me-1"></i> 22 dies en 22 peus
+            <a class="nav-link dropdown-toggle" href="#" id="proj2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-ship"></i> Projecte 22 dies en 22 peus
             </a>
             <ul class="dropdown-menu" aria-labelledby="proj2Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/introduccio"><i class="fa-solid fa-file-lines me-1"></i> Introducció al Projecte</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/vectors"><i class="fa-solid fa-compass me-1"></i> Calculem rumbs amb vectors</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/distancies"><i class="fa-solid fa-arrows-left-right-to-line me-1"></i> Calculem distancies amb GPS</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/introduccio"><i class="fa-solid fa-file-lines"></i> Introducció al projecte</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/vectors"><i class="fa-regular fa-compass"></i> Calculem rumbs amb vectors</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/distancies"><i class="fa-solid fa-arrows-left-right-to-line"></i> Calculem distàncies amb GPS</a></li>
             </ul>
           </li>
-         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="proj3Dropdown" role="button" data-bs-toggle="dropdown">
-              <i class="fa-solid fa-folder-open me-1"></i> Contaminació i Salut al Baix Llobregat
+          <!-- Projecte 3 -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="proj2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-recycle me-1"></i> Projecte Contaminació i salut del Baix Llobregat
             </a>
-            <ul class="dropdown-menu" aria-labelledby="proj3Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/contaminacio"><i class="fa-solid fa-head-side-mask me-1"></i>Contaminació i Salut Respiratòria a Gavà</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/epi"><i class="fa-solid fa-head-side-mask me-1"></i>Environmental Epidemiological Analysis</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/dlnm"><i class="fa-solid fa-smog me-1"></i> Distributed Lag Non-linear Models</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/epidemiologia"><i class="fa-solid fa-industry me-1"></i> Resultats de Gavà</a></li>
+            <ul class="dropdown-menu" aria-labelledby="proj2Dropdown">
+              <li><a class="dropdown-item" href="https://mberniol.github.io/contaminacio"><i class="fa-solid fa-smog"></i> Recerca contaminació i salut respiratòria a Gavà</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/epi"><i class="fa-solid fa-head-side-mask me-1"></i> Environmental Epidemiological Analysis</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/dlnm"><i class="fa-solid fa-industry me-1"></i> Distributed Lag Non-linear Models</a></li>
+              <li><a class="dropdown-item" href="https://mberniol.github.io/epidemiologia"><i class="fa-solid fa-square-poll-vertical me-1"></i> Resultats de Gavà</a></li>
             </ul>
           </li>
         </ul>
+      </div>
     </div>
   </nav>
     
