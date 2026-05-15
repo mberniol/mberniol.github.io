@@ -6,12 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>🌫️ Environmental Epidemiological Analysis – WHO Risk & CI</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -62,124 +60,90 @@
       visibility: visible;
       opacity: 1;
     }
-    /* 1. Submenús en mode fosc */
-    body[data-bs-theme="dark"] .dropdown-menu {
-      background-color: #2c2c2c !important;
-      border-color: #444;
-    }
-    body[data-bs-theme="dark"] .dropdown-item {
-      color: #f8f9fa !important;
-    }
-    body[data-bs-theme="dark"] .dropdown-item:hover,
-    body[data-bs-theme="dark"] .dropdown-item:focus {
-      background-color: #3c3c3c !important;
-      color: #ffffff !important;
-    }
-
-    /* 2. Botó mode fosc/clar només icona */
-    #themeToggle {
-      border: none;
-      background: transparent;
-      font-size: 1.3rem;
-      color: inherit;
-    }
-
-    /* 3. Hamburguesa blanca en mode fosc */
-    .navbar-toggler {
-      border: none;
-    }
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280,0,0,0.7%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-    body[data-bs-theme="dark"] .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,0.9%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-
-    /* 4. Logo circular i adaptatiu */
-    .logo {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-    }
-    @media (max-width: 576px) {
-      .logo {
-        width: 30px;
-        height: 30px;
-      }
-    }
-    @media (min-width: 992px) {
-      .logo {
-        width: 50px;
-        height: 50px;
-      }
-    }
-    .navbar .nav-link {
-  color: #1e293b; /* oscuro en fondo blanco */
-}
-
-body[data-bs-theme="dark"] .navbar .nav-link {
-  color: #f8fafc; /* claro en fondo oscuro */
-}
   </style>
 </head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+<nav class="bg-slate-900 border border-slate-700 rounded-2xl mx-4 mt-4 px-4 py-3 shadow-lg">
+  <div class="flex items-center gap-8">
+    
+    <!-- Logo -->
+    <a href="https://mberniol.github.io" class="flex items-center gap-3">
+      <img src="https://mberniol.github.io/logo.png" class="w-10 h-10 rounded-full">
+      <span class="font-bold text-white text-lg">Web de Marc</span>
+    </a>
 
-<body data-bs-theme="light">
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow sticky-top">
-    <div class="container-fluid">
-      <!-- 5. Logo i text -->
-      <a class="navbar-brand d-flex align-items-center" href="https://mberniol.github.io/">
-        <img src="https://mberniol.github.io/logo.png" width="50" height="50" alt="Logo" class="logo rounded-circle me-2">
-        <span class="fw-bold">Web de Marc</span>
-      </a>
+    <!-- Botón móvil -->
+    <button id="menuBtn" class="lg:hidden text-white text-2xl">☰</button>
 
-      <!-- Botó menú mòbil -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <!-- Menú -->
+    <div id="menu" class="hidden lg:flex gap-6 items-center text-sm">
 
-      <!-- Menú -->
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- Projecte 1 -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="proj1Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-magnifying-glass"></i> Cerca IA vs Google Acadèmic
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="proj1Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/cerca"><i class="fa-solid fa-carrot"></i> Recerca Carbasó</a></li>
-            </ul>
-          </li>
-          <!-- Projecte 2 -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="proj2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-ship"></i> Projecte 22 dies en 22 peus
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="proj2Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/introduccio"><i class="fa-solid fa-file-lines"></i> Introducció al projecte</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/vectors"><i class="fa-regular fa-compass"></i> Calculem rumbs amb vectors</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/distancies"><i class="fa-solid fa-arrows-left-right-to-line"></i> Calculem distàncies amb GPS</a></li>
-            </ul>
-          </li>
-          <!-- Projecte 3 -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="proj2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-recycle me-1"></i> Projecte Contaminació i salut del Baix Llobregat
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="proj2Dropdown">
-              <li><a class="dropdown-item" href="https://mberniol.github.io/contaminacio"><i class="fa-solid fa-smog"></i> Recerca contaminació i salut respiratòria a Gavà</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/epi"><i class="fa-solid fa-head-side-mask me-1"></i> Environmental Epidemiological Analysis</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/dlnm"><i class="fa-solid fa-industry me-1"></i> Distributed Lag Non-linear Models</a></li>
-              <li><a class="dropdown-item" href="https://mberniol.github.io/epidemiologia"><i class="fa-solid fa-square-poll-vertical me-1"></i> Resultats de Gavà</a></li>
-            </ul>
-          </li>
-        </ul>
-        <!-- Botó mode clar/fosc -->
-        <button id="themeToggle" class="ms-2"><i class="fa-solid fa-moon"></i></button>
+      <!-- Dropdown 1 -->
+      <div class="relative">
+        <button onclick="toggleDropdown('dd1')" class="text-slate-300 hover:text-white">
+          Cerca IA vs Google Acadèmic
+        </button>
+        <div id="dd1" class="hidden absolute left-0 bg-slate-800 border border-slate-600 rounded-xl mt-2 p-2 min-w-[220px]">
+          <a href="https://mberniol.github.io/cerca" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Recerca Carabassó
+          </a>
+        </div>
       </div>
+
+      <!-- Dropdown 2 -->
+      <div class="relative">
+        <button onclick="toggleDropdown('dd2')" class="text-slate-300 hover:text-white">
+          22 dies en 22 peus
+        </button>
+        <div id="dd2" class="hidden absolute left-0 bg-slate-800 border border-slate-600 rounded-xl mt-2 p-2 min-w-[300px]">
+          <a href="https://mberniol.github.io/introduccio" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Introducció al Projecte
+          </a>
+          <a href="https://mberniol.github.io/vectors" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Calculem rumbs amb vectors
+          </a>
+          <a href="https://mberniol.github.io/distancies" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Calculem distàncies amb GPS
+          </a>
+        </div>
+      </div>
+
+      <!-- Dropdown 3 -->
+      <div class="relative">
+        <button onclick="toggleDropdown('dd3')" class="text-slate-300 hover:text-white">
+          Contaminació i Salut al Baix Llobregat
+        </button>
+        <div id="dd3" class="hidden absolute left-0 bg-slate-800 border border-slate-600 rounded-xl mt-2 p-2 min-w-[260px]">
+          <a href="https://mberniol.github.io/contaminacio" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Contaminació i Salut Respiratòria a Gavà
+          </a>
+          <a href="https://mberniol.github.io/epi" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Environmental Epidemiological Analysis
+          </a>
+          <a href="https://mberniol.github.io/dlnm" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Distributed Lag Non-linear Models
+          </a>
+          <a href="https://mberniol.github.io/epidemiologia" class="block px-3 py-2 hover:bg-slate-700 rounded-lg">
+            Resultats de Gavà
+          </a>
+        </div>
+      </div>
+
     </div>
-  </nav>
-  
+  </div>
+
+  <!-- Menú móvil -->
+  <div id="mobileMenu" class="hidden flex-col gap-2 mt-4 lg:hidden text-sm">
+    <a href="https://mberniol.github.io/cerca" class="block px-3 py-2 bg-slate-800 rounded-lg">Recerca Carabassó</a>
+    <a href="https://mberniol.github.io/introduccio" class="block px-3 py-2 bg-slate-800 rounded-lg">Introducció al Projecte</a>
+    <a href="https://mberniol.github.io/vectors" class="block px-3 py-2 bg-slate-800 rounded-lg">Calculem rumbs amb vectors</a>
+    <a href="https://mberniol.github.io/distancies" class="block px-3 py-2 bg-slate-800 rounded-lg">Calculem distàncies amb GPS</a>
+    <a href="https://mberniol.github.io/contaminacio" class="block px-3 py-2 bg-slate-800 rounded-lg">Contaminació i Salut Respiratòria</a>
+    <a href="https://mberniol.github.io/epi" class="block px-3 py-2 bg-slate-800 rounded-lg">Environmental Epidemiological Analysis</a>
+    <a href="https://mberniol.github.io/dlnm" class="block px-3 py-2 bg-slate-800 rounded-lg">Distributed Lag Non-linear Models</a>
+    <a href="https://mberniol.github.io/epidemiologia" class="block px-3 py-2 bg-slate-800 rounded-lg">Resultats Gavà</a>
+  </div>
+</nav>
   <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-gradient-to-r from-sky-600 to-emerald-600 rounded-2xl sm:rounded-3xl shadow-xl mt-4 sm:mt-6 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
@@ -209,7 +173,7 @@ body[data-bs-theme="dark"] .navbar .nav-link {
             <p class="font-semibold text-sky-400 flex items-center gap-2">📁 Data requirements</p>
             <ul class="list-disc pl-5 space-y-1 mt-1 text-sm sm:text-base text-slate-300">
               <li><span class="font-mono text-emerald-400">date</span> (YYYY-MM-DD) and <span class="font-mono text-emerald-400">incidencia_1000</span> are mandatory.</li>
-              <li>Optional: <span class="font-mono">pm2.5</span>, <span class="font-mono">pm10</span>, <span class="font-mono">no2</span>, <span class="font-mono">nox</span>,<span class="font-mono">no</span>, <span class="font-mono">o3</span>, <span class="font-mono">so2</span>.</li>
+              <li>Optional: <span class="font-mono">pm2.5</span>, <span class="font-mono">pm10</span>, <span class="font-mono">no2</span>, <span class="font-mono">nox</span>, <span class="font-mono">o3</span>, <span class="font-mono">so2</span>.</li>
               <li>CSV format with header, commas or semicolons supported.</li>
             </ul>
           </div>
@@ -227,8 +191,8 @@ body[data-bs-theme="dark"] .navbar .nav-link {
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
             <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
               <p class="font-semibold text-emerald-400">📈 Correlation & p-values</p>
-              <p class="text-slate-300 text-xs mt-1">Pearson's r + significance. p &lt; 0.05 indicates association.<br>
-              <span class="text-amber-400">⚠️ Asterisks (*) indicate statistical significance (p &lt; 0.05 = *, p &lt; 0.01 = **, p &lt; 0.001 = ***). They do NOT measure the strength of association.</span></p>
+              <p class="text-slate-300 text-xs mt-1">Pearson's r + significance. p < 0.05 indicates association.<br>
+              <span class="text-amber-400">⚠️ Asterisks (*) indicate statistical significance (p < 0.05 = *, p < 0.01 = **, p < 0.001 = ***). They do NOT measure the strength of association.</span></p>
             </div>
             <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
               <p class="font-semibold text-amber-400">⚠️ Peak detection</p>
@@ -264,8 +228,8 @@ body[data-bs-theme="dark"] .navbar .nav-link {
           <div>
             <h2 class="text-xl sm:text-2xl font-semibold mb-4">📍 Select data source</h2>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <select id="citySelector" class="bg-slate-800 text-base sm:text-lg rounded-2xl px-4 py-3 sm:py-4 border border-slate-600 text-white w-full sm:max-w-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
-                <option value="" selected disabled>— Select a city or upload file —</option>
+               <select id="citySelector" class="bg-slate-800 text-base sm:text-lg rounded-2xl px-4 py-3 sm:py-4 border border-slate-600 text-white w-full sm:max-w-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
+                                <option value="" selected disabled>— Select a city or upload file —</option>
                                 <option value="gava.csv">🏢 Gavà</option>
                                 <option value="elprat(jardins).csv">🏢 El Prat de Llobregat (jardins de la pau)</option>
                                 <option value="elprat(sagnier).csv">🏢 El Prat de Llobregat (sagnier)</option>
@@ -276,7 +240,8 @@ body[data-bs-theme="dark"] .navbar .nav-link {
                                 <option value="santvicencdelshorts.csv">🏢 Sant Vicenç dels Horts</option>
                                 <option value="viladecans.csv">🏢 Viladecans</option>
                                 <option value="custom">📁 Upload custom file...</option>
-              </select>
+                            </select>
+
               <span class="text-slate-500 font-medium text-center sm:text-left">or</span>
               <div class="w-full sm:w-auto">
                 <label for="csvInput" class="cursor-pointer bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/50 transition-all px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-emerald-400 font-semibold flex items-center justify-center gap-2 text-base sm:text-lg w-full sm:w-auto">📂 Browse</label>
@@ -287,7 +252,7 @@ body[data-bs-theme="dark"] .navbar .nav-link {
               <strong>Required columns:</strong>
               <span class="font-mono text-emerald-400">date</span>,
               <span class="font-mono text-emerald-400">incidencia_1000</span><br>
-              <strong>Optional:</strong> pm2.5, pm10, no2, nox, no, co, h2s, o3, so2, c6h6
+              <strong>Optional:</strong> pm2.5, pm10, no2, nox, o3, so2
             </div>
           </div>
           <div id="fileStatus" class="hidden mt-2 text-emerald-400 font-medium bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20 text-sm"></div>
@@ -380,10 +345,7 @@ body[data-bs-theme="dark"] .navbar .nav-link {
             <h3 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">⚠️ Peak detection</h3>
             <div class="overflow-x-auto rounded-xl border border-slate-700">
               <table id="peaksTable" class="w-full text-xs sm:text-sm min-w-[500px]">
-                <thead class="sticky top-0 bg-slate-800">
-                  <tr class="text-slate-400 text-xs">
-                    </tr>
-                </thead>
+                <thead class="sticky top-0 bg-slate-800"><tr class="text-slate-400 text-xs"><th class="px-3 sm:px-6 py-3 text-left">Date</th><th class="px-3 sm:px-6 py-3 text-left">Incidence</th><th class="px-3 sm:px-6 py-3 text-left">PM₂.₅</th><th class="px-3 sm:px-6 py-3 text-left">NO₂</th><th class="px-3 sm:px-6 py-3 text-left">O₃</th><th class="px-3 sm:px-6 py-3 text-left">Alert</th></tr></thead>
                 <tbody class="divide-y divide-slate-700"></tbody>
               </table>
             </div>
@@ -393,25 +355,6 @@ body[data-bs-theme="dark"] .navbar .nav-link {
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Mode clar/fosc amb canvi d'icona
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = themeToggle.querySelector('i');
-
-    themeToggle.addEventListener('click', () => {
-      if (document.body.getAttribute('data-bs-theme') === 'dark') {
-        document.body.setAttribute('data-bs-theme', 'light');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-      } else {
-        document.body.setAttribute('data-bs-theme', 'dark');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-      }
-    });
-  </script>
-  
   <script>
     let rawData = [];
     let filteredData = [];
@@ -453,20 +396,7 @@ body[data-bs-theme="dark"] .navbar .nav-link {
     }
 
     function cleanLabel(name) {
-      return String(name)
-        .toLowerCase()
-        .replace(/_/g, '.')
-        .replace(/pm2\.5|pm2_5/g, 'PM2.5')
-        .replace(/pm10/g, 'PM10')
-        .replace(/no2/g, 'NO₂')
-        .replace(/nox/g, 'NOx')
-        .replace(/\bno\b/g, 'NO')
-        .replace(/o3/g, 'O₃')
-        .replace(/so2/g, 'SO₂')
-        .replace(/co/g, 'CO')
-        .replace(/h2s/g, 'H₂S')
-        .replace(/c6h6/g, 'C₆H₆')
-        .toUpperCase();
+      return name.replace(/_/g, '.').replace(/pm2\.5|pm2_5/i, 'PM2.5').replace(/pm10/i, 'PM10').replace(/no2/i, 'NO₂').replace(/nox/i, 'NOx').replace(/o3/i, 'O₃').replace(/so2/i, 'SO₂').toUpperCase();
     }
 
     function parseDate(dateStr) {
@@ -536,10 +466,6 @@ body[data-bs-theme="dark"] .navbar .nav-link {
       out.nox = toNumber(out.nox);
       out.o3 = toNumber(out.o3);
       out.so2 = toNumber(out.so2);
-      out.co = toNumber(out.co);
-      out.h2s = toNumber(out.h2s);
-      out.no = toNumber(out.no);
-      out.c6h6 = toNumber(out.c6h6);
       out.date = out.date ? String(out.date).trim() : null;
       return out;
     }
@@ -604,7 +530,7 @@ body[data-bs-theme="dark"] .navbar .nav-link {
     }
 
     function getWHOThreshold(key) {
-      const thresholds = { 'pm2_5': 15, 'pm10': 45, 'no2': 25, 'o3': 100, 'so2': 40, 'co': 4000, 'h2s': 7,'no': 25, 'c6h6': 5};
+      const thresholds = { 'pm2_5': 15, 'pm10': 45, 'no2': 25, 'o3': 100, 'so2': 40 };
       return thresholds[key] || null;
     }
 
@@ -688,13 +614,10 @@ body[data-bs-theme="dark"] .navbar .nav-link {
         if (threshold !== null && totalValidDays > 0) exceedCount = values.filter(v => v > threshold).length;
         return mean !== null ? { label: p.label, value: mean, exceedCount, threshold, totalValidDays, hasThreshold: threshold !== null } : null;
       }).filter(Boolean);
-      
       const totalDaysEl = document.getElementById('totalDays');
       if (totalDaysEl) totalDaysEl.textContent = filteredData.length;
-      
       const avgIncEl = document.getElementById('avgIncidence');
       if (avgIncEl) avgIncEl.textContent = avgInc != null ? avgInc.toFixed(2) : '—';
-      
       const pollutantsContainer = document.getElementById('pollutantsGrid');
       if (pollutantsContainer) {
         if (pollutantStats.length) {
@@ -711,116 +634,32 @@ body[data-bs-theme="dark"] .navbar .nav-link {
       return { incidences, avgInc };
     }
 
-    // --- FUNCIONS SMART PEAK TABLE ---
-    function getPeakColumns() {
-      const all = [
-        { key: 'pm2_5', label: 'PM₂.₅' },
-        { key: 'pm10', label: 'PM₁₀' },
-        { key: 'no2', label: 'NO₂' },
-        { key: 'nox', label: 'NOx' },
-        { key: 'no', label: 'NO' },
-        { key: 'o3', label: 'O₃' },
-        { key: 'so2', label: 'SO₂' },
-        { key: 'co', label: 'CO' },
-        { key: 'h2s', label: 'H₂S' },
-        { key: 'c6h6', label: 'C₆H₆' }
-      ];
-
-      return all.filter(c =>
-        filteredData.some(r => r[c.key] != null && Number.isFinite(r[c.key]))
-      );
-    }
-
-    function renderPeaksHeader(cols) {
-      const theadRow = document.querySelector('#peaksTable thead tr');
-      if (!theadRow) return;
-
-      theadRow.innerHTML = `
-        <th class="px-3 sm:px-6 py-3 text-left">Date</th>
-        <th class="px-3 sm:px-6 py-3 text-left">Incidence</th>
-        ${cols.map(c => `
-          <th class="px-3 sm:px-6 py-3 text-left">${c.label}</th>
-        `).join('')}
-        <th class="px-3 sm:px-6 py-3 text-left">Alert</th>
-      `;
-    }
-
-    function getPeaks() {
-      const vals = filteredData
-        .map(r => r.incidencia_1000)
-        .filter(v => v != null && Number.isFinite(v));
-
-      if (!vals.length) return [];
-
-      const mean = safeMean(vals);
-      const std = safeStd(vals);
-
-      if (!std || std === 0) return [];
-
-      const threshold = mean + 2 * std;
-
-      return filteredData
-        .filter(r =>
-          r.incidencia_1000 != null &&
-          r.incidencia_1000 > threshold
-        )
-        .sort((a, b) => b.incidencia_1000 - a.incidencia_1000)
-        .slice(0, 15);
-    }
-
     function renderPeaksTable() {
       const tbody = document.querySelector('#peaksTable tbody');
       const peakCountEl = document.getElementById('peakCount');
-
       if (!tbody || !peakCountEl) return;
-
       tbody.innerHTML = '';
-
-      const peaks = getPeaks();
-      const cols = getPeakColumns();
-
-      // Header dinàmic
-      renderPeaksHeader(cols);
-
-      peakCountEl.textContent = peaks.length;
-
-      if (!peaks.length) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="${2 + cols.length + 1}" class="text-center py-6 text-slate-400">
-              No significant peaks detected
-            </td>
-          </tr>
-        `;
+      const incidenceVals = filteredData.map(r => r.incidencia_1000).filter(v => v != null && Number.isFinite(v));
+      if (!incidenceVals.length) {
+        peakCountEl.textContent = '0';
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No incidence data available</td></tr>`;
         return;
       }
-
+      const mean = safeMean(incidenceVals), std = safeStd(incidenceVals) || 0;
+      const threshold = mean + 2 * std;
+      const peaks = filteredData.filter(row => row.incidencia_1000 != null && row.incidencia_1000 > threshold).sort((a,b)=>b.incidencia_1000 - a.incidencia_1000).slice(0,15);
+      peakCountEl.textContent = peaks.length;
+      if (!peaks.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No significant peaks detected</td></tr>`;
+        return;
+      }
       peaks.forEach(row => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-800 transition-colors';
-
-        const pollutantCells = cols.map(c => {
-          const v = row[c.key];
-          return `<td class="px-3 sm:px-6 py-3">${v != null ? v.toFixed(1) : '—'}</td>`;
-        }).join('');
-
-        tr.innerHTML = `
-          <td class="px-3 sm:px-6 py-3 font-mono">${row.date ?? '—'}</td>
-          <td class="px-3 sm:px-6 py-3 text-red-400 font-semibold">
-            ${row.incidencia_1000.toFixed(2)}
-          </td>
-          ${pollutantCells}
-          <td class="px-3 sm:px-6 py-3">
-            <span class="px-2 py-1 text-xs bg-red-500/20 text-red-400 rounded-full border border-red-500/20">
-              HIGH PEAK
-            </span>
-          </td>
-        `;
-
+        tr.innerHTML = `<td class="px-3 sm:px-6 py-3 font-mono">${row.date ?? '—'}</td><td class="px-3 sm:px-6 py-3 text-red-400 font-semibold">${row.incidencia_1000.toFixed(2)}</td><td class="px-3 sm:px-6 py-3">${row.pm2_5 != null ? row.pm2_5.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3">${row.no2 != null ? row.no2.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3">${row.o3 != null ? row.o3.toFixed(1) : '—'}</td><td class="px-3 sm:px-6 py-3"><span class="px-2 py-1 text-xs bg-red-500/20 text-red-400 rounded-full border border-red-500/20">HIGH PEAK</span></td>`;
         tbody.appendChild(tr);
       });
     }
-    // ------------------------------------
 
     function formatPValue(p) {
       if (!Number.isFinite(p)) return '—';
@@ -1091,20 +930,29 @@ body[data-bs-theme="dark"] .navbar .nav-link {
     window.onload = () => {
       setupEventListeners();
       initModal();
-      console.log('✅ Application ready – robust error handling & smart peak table added');
+      console.log('✅ Application ready – robust error handling added');
     };
+function toggleDropdown(id) {
+  // cerrar todos
+  document.querySelectorAll('[id^="dd"]').forEach(el => {
+    if (el.id !== id) el.classList.add('hidden');
+  });
+
+  // abrir/cerrar el clicado
+  document.getElementById(id).classList.toggle('hidden');
+}
+
+// cerrar si haces clic fuera
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.relative')) {
+    document.querySelectorAll('[id^="dd"]').forEach(el => el.classList.add('hidden'));
+  }
+});
+
+// menú móvil
+document.getElementById('menuBtn')?.addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
