@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <style>
-        * {
+ * {
             box-sizing: border-box;
             margin: 0;
         }
@@ -184,74 +184,6 @@
             .card { padding: 20px 16px; }
             h1 { font-size: 1.9rem; }
         }
-        /* Navbar fija arriba */
-#mainNavbar {
-  background-color: #ffffff; /* fondo sólido */
-  z-index: 1030;             /* más alto que el contenido */
-  border-radius: 0;       
-  transition: background-color 0.3s ease;
-}
-
-/* Navbar oscuro */
-body[data-bs-theme="dark"] #mainNavbar {
-  background-color: #2c2c2c;
-}
-
-
-/* Texto y hamburguesa */
-#mainNavbar .navbar-brand,
-#mainNavbar .nav-link,
-#themeToggle {
-  color: #000; /* claro */
-}
-
-body[data-bs-theme="dark"] #mainNavbar .navbar-brand,
-body[data-bs-theme="dark"] #mainNavbar .nav-link,
-body[data-bs-theme="dark"] #themeToggle {
-  color: #fff; /* oscuro */
-}
-
-/* Hamburguesa */
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280,0,0,0.7%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
-body[data-bs-theme="dark"] .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,0.9%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-/* 4. Logo circular i adaptatiu */
-    .logo {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-    @media (max-width: 576px) {
-      .logo {
-        width: 30px;
-        height: 30px;
-      }
-    }
-    @media (min-width: 992px) {
-      .logo {
-        width: 50px;
-        height: 50px;
-      }
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f7f7f7;
-
-    }
-  body[data-bs-theme="dark"] {
-      background: #1f1f1f;
-    }
-  body[data-bs-theme="dark"] .navbar {
-      background: rgba(40, 40, 40, 0.6);
-    }
-  body[data-bs-theme="dark"] .card, body[data-bs-theme="dark"] video {
-      box-shadow: 0 4px 20px rgba(255,255,255,0.05);
-    }
     </style>
 </head>
 
