@@ -268,17 +268,17 @@
 <p>Air pollution patterns in Gavà can also be analysed using a polar plot in RStudio.</p>
 <p>To create a polar plot with the openair library, we need data columns named ws (wind speed) and wd (wind direction), together with the pollutant we want to study, such as NO<sub>2</sub> or O<sub>3</sub>. The plot can be generated with the command: <code>polarPlot(cityall, pollutant = "no2")</code></p>
 <p>A polar plot helps us identify how pollutant concentrations vary according to both wind direction and wind speed. Higher concentrations shown in specific directions may indicate possible pollution sources affecting Gavà.</p>
-<p>As shown in the image below, the highest NO₂ concentrations are associated with winds coming from the direction of Barcelona and L'Hospitalet de Llobregat, suggesting that these urban and industrial areas may influence air quality in Gavà.</p>                                                                                                                                                                                                                                                                            <!--13/1/18/3/ /2/.-->
+<p>As shown in the image below, the highest NO<sub>2</sub> and <sub>3</sub> concentrations are associated with winds coming from the direction of Barcelona and L'Hospitalet de Llobregat, suggesting that these urban and industrial areas may influence air quality in Gavà.</p>                                                                                                                                                                                                                                                                            <!--13/1/18/3/ /2/.-->
 <img src="polarplot_no2.png">
 <img src="polarplot_o3.png">
 <img src="googlemaps_pollutionrose_no2.png">
 
 
-    <h1>How can we analyse air pollution in Gavà using a polar plot?</h1>
-<p>Air pollution patterns in Gavà can also be analysed using a polar plot in RStudio.</p>
-<p>To create a polar plot with the openair library, we need data columns named ws (wind speed) and wd (wind direction), together with the pollutant we want to study, such as NO<sub>2</sub> or O<sub>3</sub>. The plot can be generated with the command: <code>polarPlot(cityall, pollutant = "no2")</code></p>
-<p>A polar plot helps us identify how pollutant concentrations vary according to both wind direction and wind speed. Higher concentrations shown in specific directions may indicate possible pollution sources affecting Gavà.</p>
-<p>As shown in the image below, the highest NO₂ concentrations are associated with winds coming from the direction of Barcelona and L'Hospitalet de Llobregat, suggesting that these urban and industrial areas may influence air quality in Gavà.</p>                                                                                                                                                                                                                                                                            <!--13/1/18/3/ /2/.-->
+    <h1>How can we visualise air pollution using a polar map?</h1>
+<p>The polarMap() function from the openairmaps library allows us to display several polar plots on an interactive map.</p>
+<p>To create this map, the dataset newcityall must contain wind speed (ws), wind direction (wd), a latitude column named lat, a longitude column named lon, a monitoring station column named site, and the pollutant to analyse, such as NO<sub>2</sub> or O<sub>3</sub>. The map can be generated with the following command: <code>polarMap( newcityall, pollutant = "no2", latitude = "lat", longitude = "lon", popup = "site" )</code></p>
+<p>This visualisation combines geographic information with wind patterns, allowing us to compare pollutant concentrations between different monitoring stations and identify possible pollution sources affecting Gavà.</p>
+<p>As shown in the image below, the highest NO<sub>2</sub> and O<sub>3</sub> concentrations are associated with winds coming from the direction of Barcelona and L'Hospitalet de Llobregat, suggesting that these urban and industrial areas may influence air quality in Gavà.</p>                                                                                                                                                                                                                                                                            <!--13/1/18/3/ /2/.-->
 <img src="polarmap_no2.png">
 <img src="polarmap_o3.png">
     
