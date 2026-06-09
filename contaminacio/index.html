@@ -297,6 +297,9 @@
             4858 days, mean incidence = 1.96 cases/1000
         </li>
     </ul>
+
+<img src="RiskIndicators.png">
+    
 <p>
             <strong>Relative Risk (RR):</strong>
             1.11 (95% CI: 1.08–1.13), p &lt; 0.001
@@ -312,10 +315,41 @@
             9.5% (95% CI: 7.4–11.6), p &lt; 0.001
         </p>
     <p>In Gavà, the statistical results show a significant association between the studied factor and the increase in the analyzed cases. The Relative Risk (RR = 1.11; 95% CI: 1.08–1.13; p &lt; 0.001) indicates that the exposed population has an approximately 11% higher risk of developing the condition compared to the non-exposed population. Since the confidence interval does not include the value 1 and the p-value is lower than 0.001, this relationship is considered highly statistically significant. Regarding the Attributable Risk (AR = 0.21 cases per 1000 inhabitants; 95% CI: 0.16–0.25; p &lt; 0.001), the results suggest that the studied exposure is associated with an additional increase of 0.21 cases per 1000 inhabitants. This represents the absolute burden of cases that could be directly attributed to the analyzed factor. Finally, the Attributable Fraction (AR% = 9.5%; 95% CI: 7.4–11.6; p &lt; 0.001) indicates that approximately 9.5% of the observed cases in Gavà could be related to this exposure. In other words, nearly one out of every ten cases could potentially be prevented if this risk factor were eliminated or reduced. The statistical significance values reinforce the robustness of the obtained results.</p>
-
     
     <br>
     <br>
+
+    <h1>Poisson Model</h1>
+    
+ <p><strong>k</strong> = number of observed cases</p>
+    <p><strong>λ</strong> = mean incidence rates</p>
+
+    <ul>
+        <li><strong>λ₁ = 2.16</strong> (High exposure)</li>
+        <li><strong>λ₀ = 1.96</strong> (Low exposure)</li>
+    </ul>
+
+    <p>
+        <strong>Poisson formula:</strong>
+        P(X = k) = (λ<sup>k</sup> e<sup>-λ</sup>) / k!
+    </p>
+
+    <p>
+        🔴 <strong>High exposure:</strong><br>
+        P(X = 2) = (2.16<sup>2</sup> × e<sup>-2.16</sup>) / 2! = 0.269 → 26.9%
+    </p>
+
+    <p>
+        🟢 <strong>Low exposure:</strong><br>
+        P(X = 2) = (1.96<sup>2</sup> × e<sup>-1.96</sup>) / 2! = 0.271 → 27.1%
+    </p>
+
+    <p>P(X = 2) represents the probability of observing 2 respiratory infection cases per 1000 inhabitants using a Poisson mathematical model based on 14 years (2011–2025) of daily data on respiratory infections and different atmospheric pollutants (NO₂, SO₂, O₃, etc.) collected from the two primary healthcare centers in Gavà. The data were obtained from the official databases of the Generalitat de Catalunya: XPVCA (Xarxa de Prevenció i Vigilància de la Contaminació Atmosfèrica) and SIVIC (Sistema d’Informació per a la Vigilància d’Infeccions a Catalunya). The results indicate that the probability of observing 2 respiratory infections per 1000 inhabitants in Gavà is 27.1% when NO₂ levels are low, while under high NO₂ exposure the probability is 26.9%. These calculations were performed considering whether NO₂ concentrations exceeded the WHO guideline limit of 25 µg/m³. To obtain a weighted average that incorporates the different proportions of days with high and low pollution levels, Bayes’ theorem was subsequently applied.</p>
+
+    <br>
+    <br>
+
+    
 
 <h1><b>FIANL CONCLUSION</b></h1>
 <p>The results of this 14-year spatiotemporal analysis show that air pollution, meteorological conditions, and respiratory infections in Gavà follow clear temporal patterns strongly influenced by human activity and seasonal environmental factors. The analysis of air pollutants between 2004 and 2025 reveals consistent daily and weekly cycles, especially for traffic-related pollutants such as NO, NO<sub>2</sub>, and NOx, which show higher concentrations during morning and evening hours on weekdays due to commuting traffic and urban activity. In contrast, ozone presents an opposite pattern, with higher concentrations during the afternoon as a result of photochemical reactions driven by solar radiation. Seasonal variations are also evident, with nitrogen oxides tending to increase during winter when atmospheric dispersion is lower, while ozone reaches its highest levels during spring and summer when sunlight intensity and temperature are greater. Other pollutants such as benzene, carbon monoxide, and sulphur dioxide generally remain at relatively low and stable levels, although moderate variations appear depending on time of day, season, and local emission sources.</p>                                                                                                                                                                                                      <!--01001101 01100001 01110010 01100011-->
