@@ -1,0 +1,867 @@
+
+<!DOCTYPE html>
+<!--
+  Aquesta primera línia indica al navegador que estem
+  utilitzant HTML5, que és el llenguatge per crear
+  pàgines web.
+-->
+
+<html lang="ca">
+<!-- Indiquem que el contingut de la pàgina és en català. -->
+
+<head>
+  <!-- Aquí posem informació sobre la pàgina web. -->
+
+  <meta charset="UTF-8">
+  <!-- Permet mostrar correctament accents, apòstrofs i símbols. -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Fa que la pàgina s'adapti a la mida de mòbils,
+       tauletes i ordinadors. -->
+
+  <title>Exercici amb printf</title>
+  <!-- És el títol que apareix a la pestanya del navegador. -->
+
+  <!--
+    Carreguem un fitxer especial que ajuda a aïllar
+    la pàgina web per poder executar WebAssembly.
+    És necessari per al funcionament de determinades
+    funcions del navegador.
+  -->
+  <script src="./coi-serviceworker.js"></script>
+
+  <!--
+    Carreguem els estils de CodeMirror.
+    CodeMirror és una eina que transforma una caixa
+    de text normal en un editor de codi més còmode.
+  -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+
+  <!-- Carreguem el tema de colors Dracula per a l'editor. -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
+  <style>
+    /*
+      CSS és el llenguatge que controla l'aspecte visual
+      de la pàgina: colors, mides, espais i distribució.
+    */
+
+    * {
+      box-sizing: border-box;
+    }
+    /* Fa que les mides dels elements siguin més fàcils de controlar. */
+
+    body {
+      margin: 0;                  /* Elimina els marges exteriors. */
+      padding: 20px;              /* Deixa espai al voltant del contingut. */
+      background: #171923;        /* Posa el fons de color fosc. */
+      color: #eee;                /* Posa el text de color clar. */
+      font-family: Arial, sans-serif; /* Escull el tipus de lletra. */
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+    /* Elimina l'espai superior del títol principal. */
+
+    .CodeMirror {
+      height: 380px;              /* Alçada de la zona per escriure codi. */
+      font-size: 15px;            /* Mida de les lletres. */
+      border-radius: 8px;         /* Arrodoneix les cantonades. */
+    }
+
+    .buttons {
+      display: flex;              /* Col·loca els botons en una fila. */
+      flex-wrap: wrap;            /* Permet que baixin de fila si cal. */
+      gap: 10px;                  /* Deixa espai entre els botons. */
+      margin: 16px 0;             /* Deixa espai a sobre i a sota. */
+    }
+
+    button {
+      padding: 11px 17px;         /* Espai interior del botó. */
+      border: 0;                  /* Elimina la vora. */
+      border-radius: 6px;         /* Arrodoneix les cantonades. */
+      background: #5865f2;        /* Color blau del botó. */
+      color: white;               /* Text blanc. */
+      font-size: 14px;             /* Mida de la lletra. */
+      cursor: pointer;             /* Mostra una mà quan hi passem. */
+    }
+
+    button:disabled {
+      opacity: .5;                /* Fa el botó més transparent. */
+      cursor: wait;               /* Mostra que hem d'esperar. */
+    }
+    /* Aquest estil s'aplica quan un botó està desactivat. */
+
+    #status {
+      padding: 10px;
+      background: #252a3a;
+      border-radius: 6px;
+      color: #f0c674;
+    }
+    /* És la zona on s'expliquen els passos i els avisos. */
+
+    #output {
+      min-height: 150px;          /* Alçada mínima de la consola. */
+      padding: 15px;
+      background: #0d1117;
+      border: 1px solid #444;
+      border-radius: 8px;
+      white-space: pre-wrap;      /* Respecta els salts de línia. */
+      overflow-wrap: anywhere;    /* Evita que el text surti de la caixa. */
+      font-family: monospace;     /* Lletra típica de programació. */
+    }
+    /* Aquesta caixa mostrarà el resultat del programa C. */
+
+    .download {
+      display: inline-block;
+      margin-top: 12px;
+      color: #8ab4f8;
+    }
+    /* Dona aspecte d'enllaç als fitxers descarregables. */
+  </style>
+</head>
+
+<body>
+<!-- Aquí comença tot allò que veurà l'usuari a la pantalla. -->
+
+  <h1>Exercici amb printf</h1>
+  <!-- Títol principal de la pàgina. -->
+
+  <div>
+    <!--
+      Aquesta zona conté l'editor on escriurem el programa C.
+      El textarea és una caixa de text que després convertirem
+      en un editor més avançat amb CodeMirror.
+    -->
+
+    <textarea id="code">
+      
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+
+    float m, Fa, alpha1, x, Ff, alpha2;
+    float W1, W2;
+    float PI = 3.14159265358979323846;
+
+    printf("===================================================\n\n");
+
+    printf("Exercici a1.1:\n\n");
+
+    printf("Afegeix les següents dades:\n");
+
+    printf("Massa (kg) = ");
+    scanf("%f", &m);
+
+    printf("Distància recorreguda (m) = ");
+    scanf("%f", &x);
+
+    printf("Força aplicada (N) = ");
+    scanf("%f", &Fa);
+
+    printf("Alpha de la força aplicada (°) = ");
+    scanf("%f", &alpha1);
+
+    printf("Força de fricció (N) = ");
+    scanf("%f", &Ff);
+
+    printf("Alpha de la força de fricció (°) = ");
+    scanf("%f", &alpha2);
+
+    W1 = Fa * x * cos(alpha1 * PI / 180.0);
+    W2 = Ff * x * cos(alpha2 * PI / 180.0);
+
+    printf("\nSabem la següent fórmula:\n");
+
+    printf("Treball = Força · Distància · Cosinus de Alpha\n");
+    printf("W = F · x · cos(alpha)\n\n");
+
+    printf("Per tant:\n");
+
+    printf("W1 = Fa · x · cos(alpha(Fa)) ;  W1 = %.2f · %.2f · cos(%.2f) ;  W1 = %.2f\n", Fa, x, alpha1, W1);
+    printf("W2 = Ff · x · cos(alpha(Ff)) ;  W2 = %.2f · %.2f · cos(%.2f) ;  W2 = %.2f\n", Ff, x, alpha2, W2);
+
+    return 0;
+}
+      
+    </textarea>
+
+  </div>
+
+  <div class="buttons">
+    <!-- Agrupem els tres botons de la pàgina. -->
+
+    <button id="run">▶ Compilar i executar</button>
+    <!-- Inicia el procés de compilació i execució del programa. -->
+
+    <button id="copy">Copiar codi</button>
+    <!-- Copia el codi de l'editor al porta-retalls. -->
+
+    <button id="downloadC">Descarregar .c</button>
+    <!-- Permet guardar el programa com un fitxer C. -->
+  </div>
+
+  <p id="status">Comprovant el navegador...</p>
+  <!-- Aquí informem de què està fent la pàgina en cada moment. -->
+
+  <h3>Consola del programa</h3>
+
+  <pre id="output">Esperant que executis el programa...</pre>
+  <!--
+    Aquesta caixa funciona com una consola:
+    aquí apareixerà el text que escrigui el programa C
+    mitjançant les instruccions printf.
+  -->
+
+  <div id="downloads"></div>
+  <!-- Aquí apareixeran els enllaços per descarregar fitxers. -->
+
+
+  <!--
+    Carreguem les dues parts de CodeMirror:
+    1. L'editor principal.
+    2. El suport per reconèixer la sintaxi del llenguatge C.
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+
+
+  <script type="module">
+  /*
+    Aquí comença JavaScript.
+
+    JavaScript és el llenguatge que fa que la pàgina
+    sigui interactiva: permet prémer botons, llegir el codi,
+    executar accions i mostrar resultats.
+
+    type="module" permet importar eines externes.
+  */
+
+    /*
+      Importem tres eines de Wasmer:
+
+      init:
+        Prepara el sistema per executar WebAssembly.
+
+      Wasmer:
+        Permet carregar i executar programes WebAssembly.
+
+      Directory:
+        Permet crear una carpeta virtual dins del navegador.
+
+      Wasmer és l'eina que ens permet executar el compilador
+      i el programa sense instal·lar-los a l'ordinador.
+    */
+    import {
+      init,
+      Wasmer,
+      Directory
+    } from "https://unpkg.com/@wasmer/sdk@0.8.0/dist/index.mjs";
+
+
+    // ==========================================
+    // 1. PREPARAR L'EDITOR DE CODI
+    // ==========================================
+
+    /*
+      Convertim la caixa de text normal en un editor CodeMirror.
+
+      document.getElementById("code"):
+        Busca a la pàgina l'element que té id="code".
+
+      CodeMirror.fromTextArea:
+        Transforma aquella caixa de text en un editor
+        amb colors, números de línia i altres comoditats.
+    */
+
+    const editor = CodeMirror.fromTextArea(
+      document.getElementById("code"),
+      {
+        mode: "text/x-csrc",    // Indiquem que escriurem llenguatge C.
+        theme: "dracula",       // Tema de colors de l'editor.
+        lineNumbers: true,      // Mostra els números de línia.
+        indentUnit: 4,          // Cada tabulació equival a 4 espais.
+        tabSize: 4,             // Amplada de la tabulació.
+        lineWrapping: true      // Evita que les línies llargues surtin.
+      }
+    );
+
+
+    // ==========================================
+    // 2. GUARDAR REFERÈNCIES ALS ELEMENTS
+    // ==========================================
+
+    /*
+      Guardem en variables els elements de la pàgina
+      que necessitarem controlar.
+
+      Així no cal buscar-los cada vegada que els utilitzem.
+    */
+
+    const status = document.getElementById("status");
+    // Zona on mostrarem els missatges d'estat.
+
+    const output = document.getElementById("output");
+    // Zona on apareixerà el resultat del programa.
+
+    const downloads = document.getElementById("downloads");
+    // Zona on posarem els enllaços de descàrrega.
+
+    const runButton = document.getElementById("run");
+    // Guardem el botó de compilar i executar.
+
+
+    // ==========================================
+    // 3. VARIABLES DE CONTROL
+    // ==========================================
+
+    /*
+      Una variable és un espai on guardem informació.
+
+      initialized:
+        Ens indica si el sistema ja està preparat.
+
+      clang:
+        Guardarà el compilador C que descarregarem.
+    */
+
+    let initialized = false;
+    let clang = null;
+
+
+    // ==========================================
+    // 4. FUNCIÓ PER CANVIAR EL MISSATGE D'ESTAT
+    // ==========================================
+
+    /*
+      Una funció és un conjunt d'instruccions
+      que podem executar quan necessitem.
+
+      Aquesta funció rep un missatge i el mostra
+      a la zona d'estat de la pàgina.
+    */
+
+    function setStatus(message) {
+      status.textContent = message;
+    }
+
+
+    // ==========================================
+    // 5. COMPROVAR SI EL NAVEGADOR ESTÀ PREPARAT
+    // ==========================================
+
+    /*
+      Per executar WebAssembly necessitem unes
+      característiques especials del navegador.
+
+      crossOriginIsolated:
+        Comprova si la pàgina està aïllada correctament.
+
+      SharedArrayBuffer:
+        És una eina del navegador que permet compartir
+        informació entre diferents processos.
+
+      Si les dues condicions es compleixen, retornem true.
+      Si no, retornem false.
+    */
+
+    function checkIsolation() {
+      return window.crossOriginIsolated &&
+        typeof SharedArrayBuffer !== "undefined";
+    }
+
+
+    // ==========================================
+    // 6. CREAR ENLLAÇOS PER DESCARREGAR FITXERS
+    // ==========================================
+
+    /*
+      Aquesta funció serveix per crear un fitxer
+      descarregable a partir de la informació que rebem.
+
+      Rep tres dades:
+
+      data:
+        El contingut que volem guardar.
+
+      filename:
+        El nom que tindrà el fitxer.
+
+      type:
+        El tipus de fitxer (text, WebAssembly, etc.).
+    */
+
+    function downloadFile(data, filename, type) {
+
+      // Creem un fitxer temporal amb les dades rebudes.
+      const blob = new Blob([data], { type });
+
+      // Creem una adreça temporal per poder accedir al fitxer.
+      const url = URL.createObjectURL(blob);
+
+      // Creem un enllaç HTML.
+      const link = document.createElement("a");
+
+      // Li indiquem on es troba el fitxer.
+      link.href = url;
+
+      // Li indiquem quin nom tindrà quan es descarregui.
+      link.download = filename;
+
+      // Text que veurà l'usuari.
+      link.textContent = "Descarregar " + filename;
+
+      // Li apliquem l'estil dels enllaços de descàrrega.
+      link.className = "download";
+
+      // Afegim l'enllaç a la pàgina.
+      downloads.appendChild(link);
+
+      // Afegim un salt de línia després de l'enllaç.
+      downloads.appendChild(document.createElement("br"));
+    }
+
+
+    // ==========================================
+    // 7. PREPARAR EL COMPILADOR C
+    // ==========================================
+
+    /*
+      Aquesta funció prepara tot el necessari
+      per poder compilar programes escrits en C.
+
+      async:
+        Indica que la funció pot fer operacions
+        que necessiten temps, com descarregar fitxers.
+
+      await:
+        Significa que esperem que una operació
+        acabi abans de continuar.
+    */
+
+    async function initialize() {
+
+      // Si ja està preparat, no cal tornar-ho a fer.
+      if (initialized) return;
+
+      // Comprovem que el navegador estigui aïllat.
+      if (!checkIsolation()) {
+
+        // Si no ho està, mostrem un error.
+        throw new Error(
+          "El navegador no està aïllat.\n" +
+          "Comprova coi-serviceworker.js i recarrega la pàgina."
+        );
+      }
+
+      // Informem que estem preparant WebAssembly.
+      setStatus("Inicialitzant WebAssembly...");
+
+      // Inicialitzem el sistema Wasmer.
+      await init();
+
+      // Informem que estem descarregant el compilador.
+      setStatus("Descarregant Clang (primera vegada pot trigar)...");
+
+      /*
+        Descarreguem Clang des del registre de Wasmer.
+
+        Clang és el compilador que transforma
+        el nostre codi escrit en C en un programa
+        que després es podrà executar.
+      */
+      clang = await Wasmer.fromRegistry("clang/clang");
+
+      // Indiquem que la preparació ja ha acabat.
+      initialized = true;
+
+      setStatus("Compilador C preparat.");
+    }
+
+
+    // ==========================================
+    // 8. COMPILAR I EXECUTAR EL PROGRAMA
+    // ==========================================
+
+    /*
+      Aquesta és la funció més important de tot el codi.
+
+      És la que s'executa quan premem el botó
+      "Compilar i executar".
+
+      Fa tots els passos necessaris:
+      1. Prepara el compilador.
+      2. Llegeix el codi escrit.
+      3. Crea un fitxer C.
+      4. Compila el fitxer.
+      5. Obté el programa WebAssembly.
+      6. Executa el programa.
+      7. Mostra el resultat.
+    */
+
+    async function compileAndRun() {
+
+      // Desactivem el botó per evitar diverses execucions simultànies.
+      runButton.disabled = true;
+
+      // Esborrem el resultat anterior.
+      output.textContent = "";
+
+      // Esborrem els enllaços de descàrrega anteriors.
+      downloads.innerHTML = "";
+
+      /*
+        try significa que intentarem executar les instruccions.
+
+        Si alguna cosa falla, saltarem al bloc catch.
+      */
+      try {
+
+        // --------------------------------------
+        // PAS 1. PREPARAR EL COMPILADOR
+        // --------------------------------------
+
+        await initialize();
+
+        // --------------------------------------
+        // PAS 2. LLEGIR EL CODI DE L'EDITOR
+        // --------------------------------------
+
+        /*
+          getValue() agafa tot el text que hi ha escrit
+          a l'editor i el guarda dins de la variable source.
+
+          És a dir, obtenim el programa C que ha escrit l'usuari.
+        */
+        const source = editor.getValue();
+
+
+        // --------------------------------------
+        // PAS 3. CREAR UNA CARPETA VIRTUAL
+        // --------------------------------------
+
+        setStatus("Preparant el fitxer C...");
+
+        /*
+          Creem una carpeta virtual.
+
+          Una carpeta virtual és una carpeta que existeix
+          dins del sistema de Wasmer, no necessàriament
+          com una carpeta real de l'ordinador.
+        */
+        const project = new Directory();
+
+        /*
+          Guardem el codi dins d'un fitxer anomenat main.c.
+
+          main.c és el nom del fitxer que contindrà
+          el nostre programa escrit en llenguatge C.
+        */
+        await project.writeFile("main.c", source);
+
+
+        // --------------------------------------
+        // PAS 4. COMPILAR EL PROGRAMA C
+        // --------------------------------------
+
+        setStatus("Compilant amb Clang...");
+
+        /*
+          Ara demanem a Clang que transformi el fitxer C
+          en un fitxer WebAssembly.
+
+          args són les instruccions que rep el compilador:
+
+          "/project/main.c"
+            És el fitxer C que volem compilar.
+
+          "-o"
+            Vol dir que volem indicar el nom del fitxer
+            de sortida.
+
+          "/project/main.wasm"
+            És el nom del fitxer que es crearà.
+
+          mount:
+            Connecta la carpeta virtual del projecte
+            amb la ruta /project que utilitza el compilador.
+        */
+
+        const compiler = await clang.entrypoint.run({
+          args: [
+            "/project/main.c",
+            "-o",
+            "/project/main.wasm"
+          ],
+          mount: {
+            "/project": project
+          }
+        });
+
+        // Esperem que el compilador acabi de treballar.
+        const compileResult = await compiler.wait();
+
+
+        /*
+          Comprovem si la compilació ha funcionat.
+
+          ok és true si tot ha anat bé.
+          Si és false, vol dir que hi ha hagut algun error.
+        */
+
+        if (!compileResult.ok) {
+
+          // Mostrem els errors que ha detectat Clang.
+          throw new Error(
+            "ERROR DE COMPILACIÓ\n\n" +
+            "Codi: " + compileResult.code + "\n\n" +
+            "Sortida:\n" + (compileResult.stdout || "") +
+            "\nErrors:\n" + (compileResult.stderr || "")
+          );
+        }
+
+
+        // --------------------------------------
+        // PAS 5. OBTENIR EL FITXER WEBASSEMBLY
+        // --------------------------------------
+
+        setStatus("Compilació correcta. Preparant l'execució...");
+
+        /*
+          La compilació ha creat main.wasm.
+
+          Ara llegim aquest fitxer i el guardem
+          dins de la variable wasm.
+        */
+        const wasm = await project.readFile("main.wasm");
+
+        /*
+          També creem un enllaç perquè l'usuari
+          pugui descarregar el fitxer WebAssembly.
+        */
+        downloadFile(
+          wasm,
+          "main.wasm",
+          "application/wasm"
+        );
+
+
+        // --------------------------------------
+        // PAS 6. EXECUTAR EL PROGRAMA
+        // --------------------------------------
+
+        setStatus("▶ Executant el programa C...");
+
+        /*
+          Carreguem el fitxer WebAssembly amb Wasmer.
+
+          Això prepara el programa perquè es pugui executar.
+        */
+        const program = await Wasmer.fromFile(wasm);
+
+        /*
+          Iniciem l'execució del programa.
+
+          És en aquest moment quan s'executen
+          les instruccions printf del programa C.
+        */
+        const execution = await program.entrypoint.run();
+
+        // Esperem que el programa acabi.
+        const result = await execution.wait();
+
+
+        // --------------------------------------
+        // PAS 7. COMPROVAR SI L'EXECUCIÓ HA ANAT BÉ
+        // --------------------------------------
+
+        if (!result.ok) {
+
+          /*
+            Si el programa ha fallat durant l'execució,
+            mostrem el codi d'error i els missatges
+            que hagi generat.
+          */
+          throw new Error(
+            "ERROR D'EXECUCIÓ\n\n" +
+            "Codi: " + result.code + "\n\n" +
+            "Sortida:\n" + (result.stdout || "") +
+            "\nErrors:\n" + (result.stderr || "")
+          );
+        }
+
+
+        // --------------------------------------
+        // PAS 8. MOSTRAR EL RESULTAT A LA CONSOLA
+        // --------------------------------------
+
+        /*
+          stdout conté el text que ha escrit el programa
+          mitjançant instruccions com printf.
+
+          result.code és el codi de sortida del programa.
+
+          Normalment, 0 significa que ha acabat correctament.
+        */
+
+        output.textContent =
+          "=== PROGRAMA EXECUTAT CORRECTAMENT ===\n\n" +
+          (result.stdout || "(El programa no ha generat cap sortida)") +
+          "\n\nCodi de sortida: " + result.code;
+
+
+        // Si hi ha missatges addicionals d'error o diagnòstic,
+        // també els mostrem a la consola.
+        if (result.stderr) {
+
+          output.textContent +=
+            "\n\n=== MISSATGES D'ERROR ===\n" +
+            result.stderr;
+        }
+
+        // Informem que tot ha acabat correctament.
+        setStatus("✓ Compilació i execució completades.");
+
+
+      } catch (error) {
+
+        /*
+          Aquest bloc s'executa si alguna instrucció
+          del try ha provocat un error.
+
+          console.error:
+            Envia informació de l'error a la consola
+            interna del navegador.
+
+          setStatus:
+            Mostra que hi ha hagut un error.
+
+          error.message:
+            Mostra l'explicació de l'error.
+        */
+
+        console.error(error);
+
+        setStatus("✗ Error");
+
+        output.textContent =
+          error?.message || String(error);
+
+
+      } finally {
+
+        /*
+          finally s'executa sempre, tant si tot ha anat bé
+          com si hi ha hagut algun error.
+
+          Tornem a activar el botó perquè l'usuari
+          pugui tornar a executar el programa.
+        */
+
+        runButton.disabled = false;
+      }
+    }
+
+
+    // ==========================================
+    // 9. CONNECTAR EL BOTÓ D'EXECUTAR
+    // ==========================================
+
+    /*
+      addEventListener significa que estem escoltant
+      si l'usuari fa alguna acció.
+
+      "click" vol dir que esperem que faci clic.
+
+      Quan ho fa, executem la funció compileAndRun.
+    */
+
+    runButton.addEventListener("click", compileAndRun);
+
+
+    // ==========================================
+    // 10. CONNECTAR EL BOTÓ DE COPIAR
+    // ==========================================
+
+    /*
+      Quan premem el botó Copiar codi:
+      1. Llegim el contingut de l'editor.
+      2. El copiem al porta-retalls de l'ordinador.
+      3. Mostrem un missatge confirmant-ho.
+    */
+
+    document.getElementById("copy").addEventListener("click", async () => {
+
+      try {
+
+        // Copiem el codi de l'editor.
+        await navigator.clipboard.writeText(editor.getValue());
+
+        // Informem que s'ha copiat correctament.
+        setStatus("Codi copiat.");
+
+      } catch (error) {
+
+        // Si falla, mostrem el motiu.
+        setStatus("No s'ha pogut copiar el codi: " + error.message);
+      }
+    });
+
+
+    // ==========================================
+    // 11. CONNECTAR EL BOTÓ DE DESCARREGAR C
+    // ==========================================
+
+    /*
+      Quan premem Descarregar .c:
+      1. Llegim el codi de l'editor.
+      2. Creem un fitxer anomenat main.c.
+      3. Preparem l'enllaç per descarregar-lo.
+    */
+
+    document.getElementById("downloadC").addEventListener("click", () => {
+
+      downloadFile(
+        editor.getValue(),  // Contingut del fitxer.
+        "main.c",           // Nom del fitxer.
+        "text/plain"        // Tipus de contingut.
+      );
+
+      setStatus("Fitxer C preparat.");
+    });
+
+
+    // ==========================================
+    // 12. COMPROVACIÓ INICIAL DEL NAVEGADOR
+    // ==========================================
+
+    /*
+      Quan s'obre la pàgina, comprovem si el navegador
+      compleix els requisits necessaris.
+
+      Si està preparat, animem l'usuari a prémer el botó.
+
+      Si no ho està, indiquem que cal recarregar la pàgina.
+    */
+
+    if (checkIsolation()) {
+
+      setStatus("✓ Navegador aïllat. Prem Compilar i executar.");
+
+    } else {
+
+      setStatus(
+        "Esperant l'aïllament del navegador. Recarrega la pàgina."
+      );
+    }
+
+  </script>
+
+</body>
+</html>
