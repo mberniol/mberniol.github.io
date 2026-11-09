@@ -140,11 +140,39 @@
     <textarea id="code">
       
 #include <stdio.h>
+#include <math.h>
 
 int main()
 {
 
-    printf("Hola Món!\n");
+    double m = 50;
+    double Fa = 160;
+    double alpha1 = 30;
+    double x = 100;
+    double Ff = -40;
+    double alpha2 = 0;
+    double W1;
+    double W2;
+    double PI = 3.14159265358979323846;
+
+    printf("Exercici a1.1:\n");
+    printf("Una vagoneta té una massa de 50 Kg. Estirem amb una força de 160 N amb un angle de 30º en direcció a la via i es desplaça 100 m. La força de fricció entre les vies i la vagoneta és de 40 N. Calcula el treball fet per cadascuna de les forces.\n\n");
+
+    W1 = Fa * x * cos(alpha1 * PI / 180.0);
+    W2 = Ff * x * cos(alpha2 * PI / 180.0);
+
+    printf("Tenim les següents dades:\n");
+    printf("m = 50kg\nFa = 160N\nAlpha (Fa) = 30°\nx = 100m\nFf = -40N\nAlpha(Ff) = 0°\nW1 = ?\nW2 = ?\n\n");
+
+    printf("Sabem la següent fórmula:\n");
+
+    printf("Treball = Força · Distància · Cosinus de Alpha\n");
+    printf("W = F · x · cos(alpha)\n\n");
+
+    printf("Per tant:\n");
+
+    printf("W1 = Fa · x · cos(alpha(Fa)) ;  W1 = %.2f · %.2f · cos(%.2f) ;  W1 = %.2f\n", Fa, x, alpha1, W1);
+    printf("W2 = Ff · x · cos(alpha(Ff)) ;  W2 = %.2f · %.2f · cos(%.2f) ;  W2 = %.2f\n", Ff, x, alpha2, W2);
 
     return 0;
 }
